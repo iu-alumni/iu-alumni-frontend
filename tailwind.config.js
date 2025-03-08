@@ -10,6 +10,13 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+        darkgray: '#333333',
+        brandgreen: '#40BA21',
+        bluegray: '#91A3B0',
+        lightgray: '#EDF1F5',
+        lightpink: '#FF8591',
+        darkpink: '#BA2161',
+        basegray: '#D9D9D9',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -54,4 +61,7 @@ export default {
   	}
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: [
+    'text-brandgreen'
+  ],
 };
