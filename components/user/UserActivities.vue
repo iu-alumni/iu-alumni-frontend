@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Activity } from '~/types';
 import Plus from '@/assets/icons/misc/plus.svg'
-import Minus from '@/assets/icons/misc/Minus.svg'
+import Minus from '@/assets/icons/misc/minus.svg'
 
 defineProps<{
   activities: Activity[],
