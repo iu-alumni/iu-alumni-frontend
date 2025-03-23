@@ -3,11 +3,17 @@ import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import EventTable from '~/components/event/EventTable.vue';
-import { testEvents } from '~/tests/data';
+import { useEventsStore } from '~/store/events';
+
+const eventsStore = useEventsStore()
+
+const events = eventsStore.events
+
+onMounted(() => {
+  eventsStore.updateEvents()
+})
 
 const search = ref('')
-
-const events = ref(testEvents)
 
 const isVerificationEnabled = ref(true)
 </script>

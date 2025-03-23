@@ -4,13 +4,19 @@ import EntityHeader from '~/components/common/EntityHeader.vue';
 import EntityParagraph from '~/components/common/EntityParagraph.vue';
 import SmallIcon from '~/components/common/SmallIcon.vue';
 import Edit from '@/assets/icons/misc/button__edit.svg'
-import type { Event } from '~/types';
 import EventParticipants from '~/components/event/EventParticipants.vue';
-import { testEvents } from '~/tests/data';
+import { useEventsStore } from '~/store/events';
 
 const route = useRoute()
 
-const event = ref(testEvents.find(event => event.id === route.params.id) as Event)
+const eventsStore = useEventsStore()
+
+const event = ref()
+
+onMounted(() => {
+  eventsStore.updateEvents()
+  event.value = eventsStore.getEventById(route.params.id as string)
+})
 
 const editUser = (id: string) => {
   navigateTo(`/users/${id}`)
