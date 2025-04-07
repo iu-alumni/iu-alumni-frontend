@@ -11,13 +11,7 @@ defineProps<{
   events: Event[]
 }>()
 
-const approve = (id: string) => {
-  return
-}
-
-const reject = (id: string) => {
-  return
-}
+const emit = defineEmits(['approve', 'reject'])
 
 const edit = (id: string) => {
   navigateTo(`/events/${id}`)
@@ -50,8 +44,8 @@ const edit = (id: string) => {
 
           <template v-else-if="event.status === 'pending'">
             <SmallIcon :src="Edit" @click="edit(event.id)" />
-            <SmallIcon :src="Approve" @click="approve(event.id)"/>
-            <SmallIcon :src="Reject" @click="reject(event.id)"/>
+            <SmallIcon :src="Approve" @click="emit('approve', event.id)"/>
+            <SmallIcon :src="Reject" @click="emit('reject', event.id)"/>
           </template>
 
           <template v-else-if="event.status === 'rejected'">

@@ -5,12 +5,19 @@ import EntityParagraph from '~/components/common/EntityParagraph.vue';
 import EventTable from '~/components/event/EventTable.vue';
 import UserActivities from '~/components/user/UserActivities.vue';
 import UserStickers from '~/components/user/UserStickers.vue';
+import { useUsersStore } from '~/store/users';
 import { testUsers } from '~/tests/data';
 import type { User } from '~/types';
 
 const route = useRoute()
 
-const user = ref(testUsers.find(user => user.id === route.params.id) as User)
+const usersStore = useUsersStore()
+
+const user = ref(usersStore.users.find(user => user.id === route.params.id) as User)
+
+const ban = () => {
+  user.value.isBanned = !user.value.isBanned
+}
 </script>
 
 <template>
@@ -24,8 +31,11 @@ const user = ref(testUsers.find(user => user.id === route.params.id) as User)
           {{ user.email }}
         </template>
         <template #buttons>
-          <DefaultButton type="error" size="small">
+          <DefaultButton v-if="!user.isBanned" type="error" size="small" @click="ban">
             Ban
+          </DefaultButton>
+          <DefaultButton v-else type="inactive" size="small" @click="ban">
+            Unban
           </DefaultButton>
         </template>
       </EntityHeader>

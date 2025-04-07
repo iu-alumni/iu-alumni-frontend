@@ -6,9 +6,12 @@ import SmallIcon from '~/components/common/SmallIcon.vue';
 import Edit from '@/assets/icons/misc/button__edit.svg'
 import EventParticipants from '~/components/event/EventParticipants.vue';
 import { useEventsStore } from '~/store/events';
+import { testEvents } from '~/tests/data';
+import type { Event } from '~/types';
 
 const route = useRoute()
 
+/*
 const eventsStore = useEventsStore()
 
 const event = ref()
@@ -17,17 +20,20 @@ onMounted(() => {
   eventsStore.updateEvents()
   event.value = eventsStore.getEventById(route.params.id as string)
 })
+*/
+
+const event = ref(testEvents.find(testEvent => testEvent.id === route.params.id) as Event)
 
 const editUser = (id: string) => {
   navigateTo(`/users/${id}`)
 }
 
 const approve = (id: string) => {
-  return
+  event.value.status = 'approved'
 }
 
 const reject = (id: string) => {
-  return
+  event.value.status = 'rejected'
 }
 </script>
 
@@ -84,7 +90,7 @@ const reject = (id: string) => {
       </EntityParagraph>
     </div>
 
-    <EntityParagraph class="mt-[18px]">
+    <EntityParagraph class="mt-[0px]">
       <template #title>
         Participants
       </template>

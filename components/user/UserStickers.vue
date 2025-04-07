@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Sticker } from '~/types';
-import DefaultButton from '../common/DefaultButton.vue';
+import AwardSticker from './AwardSticker.vue';
 
 defineProps<{
   stickers: Sticker[]
@@ -14,18 +14,18 @@ defineProps<{
         Stickers
       </h3>
 
-      <DefaultButton>
-        Award
-      </DefaultButton>
+      <AwardSticker />
     </div>
 
-    <div class="flex gap-[16px]">
+    <div class="flex gap-[16px] min-w-0 min-h-0 overflow-x-auto pb-[8px]">
       <div
         v-for="sticker in stickers"
         :key="sticker.id"
         class="flex flex-col gap-[14px] items-center"
       >
-        <img :src="sticker.img" class="max-w-[96px] max-h-[96px]" />
+        <div class="w-[96px] h-[96px] flex items-center justify-center">
+          <img :src="sticker.img" class="max-w-[96px] max-h-[96px]" />
+        </div>
         <span class="text-bluegray text-[18px]">
           {{ sticker.label }}
         </span>
