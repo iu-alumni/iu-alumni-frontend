@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import TextInput from '~/components/common/TextInput.vue';
+import UploadFile from '~/components/common/UploadFile.vue';
 import UserTable from '~/components/user/UserTable.vue';
-import { testUsers } from '~/tests/data';
+import { useUsersStore } from '~/store/users';
 
 const search = ref('')
 
-const users = ref(testUsers)
+const usersStore = useUsersStore()
+
+const users = usersStore.users
+
+const searchedUsers = computed(
+  () => users
+    .filter(user => (user.name.toLowerCase() + user.email.toLowerCase()).includes(search.value.toLowerCase()))
+)
+
+const banUser = (id: string) => {
+  const selectedUser = users.find(user => user.id === id)
+  if (selectedUser)
+    selectedUser.isBanned = !selectedUser.isBanned
+}
 </script>
 
 <template>
@@ -21,13 +34,13 @@ const users = ref(testUsers)
 
         <div class="flex gap-[24px]">
           <TextInput v-model="search" class="max-w-[244px]" placeholder="Search..." />
-          <DefaultButton size="small">
+          <UploadFile size="small">
             Add&nbsp;alumni
-          </DefaultButton>
+          </UploadFile>
         </div>
       </div>
 
-      <UserTable class="mt-[36px]" :users="users" />
+      <UserTable class="mt-[36px]" :users="searchedUsers" @ban="banUser" />
     </div>
 
     <InstructionParagraph class="col-span-1 mt-[54px]">

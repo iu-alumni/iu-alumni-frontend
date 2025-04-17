@@ -1,20 +1,35 @@
 <script setup lang="ts">
 import Logo from '@/assets/icons/logo.svg'
+import { auth } from '~/api/auth'
 import DefaultButton from '~/components/common/DefaultButton.vue'
 import TextInput from '~/components/common/TextInput.vue'
+import { resetErrorMessage } from '~/misc/validation'
 
 definePageMeta({
   layout: 'login',
 })
 
 const signIn = () => {
+  auth(credentials.value.email, credentials.value.password)
+  .then(res => localStorage.setItem('authToken', res.data.access_token))
+  .then(() => {
     navigateTo('/users')
+  })
+  .catch((e) => {
+    console.error(e)
+    isError.value = true
+  })
 }
+
+const errorMessage = "Incorrect password or e-mail"
+const isError = ref(false)
 
 const credentials = ref({
   email: '',
   password: '',
 })
+
+resetErrorMessage(credentials, isError)
 </script>
 
 <template>
@@ -24,8 +39,8 @@ const credentials = ref({
       <div class="flex flex-col gap-[15px] w-full">
         <h3 class="mb-[5px]">Sign in</h3>
         <TextInput v-model="credentials.email" placeholder="E-mail" />
-        <TextInput v-model="credentials.password" placeholder="Password" is-password />
-        <DefaultButton @click="signIn">
+        <TextInput v-model="credentials.password" placeholder="Password" is-password :is-error="isError" :error-message="errorMessage" />
+        <DefaultButton @click.prevent="signIn">
           Continue
         </DefaultButton>
         <button class="button-text">

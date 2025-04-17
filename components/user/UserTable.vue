@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Approve from '@/assets/icons/misc/button__approve.svg'
 import Reject from '@/assets/icons/misc/button__reject.svg'
+import Rereject from '@/assets/icons/misc/button__rereject.svg'
 import Edit from '@/assets/icons/misc/button__edit.svg'
 import type { User } from '~/types';
 import SmallIcon from '../common/SmallIcon.vue';
@@ -11,9 +12,7 @@ defineProps<{
   users: User[]
 }>()
 
-const ban = (id: string) => {
-  return
-}
+const emit = defineEmits(['ban'])
 
 const edit = (id: string) => {
   navigateTo(`/users/${id}`)
@@ -36,9 +35,14 @@ const edit = (id: string) => {
         </div>
 
         <div class="flex items-center gap-[24px]">
-          <template v-if="user.isRegistered">
+          <template v-if="user.isRegistered && !user.isBanned">
             <SmallIcon :src="Edit" @click="edit(user.id)" />
-            <SmallIcon :src="Reject" @click="ban(user.id)" />
+            <SmallIcon :src="Reject" @click="emit('ban', user.id)" />
+          </template>
+
+          <template v-else-if="user.isRegistered && user.isBanned">
+            <SmallIcon :src="Edit" @click="edit(user.id)" />
+            <SmallIcon :src="Rereject" @click="emit('ban', user.id)" />
           </template>
 
           <template v-else>

@@ -3,11 +3,32 @@ import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import EventTable from '~/components/event/EventTable.vue';
+import { useEventsStore } from '~/store/events';
 import { testEvents } from '~/tests/data';
+import Id from './[id].vue';
+
+/*
+const eventsStore = useEventsStore()
+
+
+const events = eventsStore.events
+
+onMounted(() => {
+  eventsStore.updateEvents()
+})
+*/
+
+const events = ref(testEvents)
 
 const search = ref('')
 
-const events = ref(testEvents)
+const searchedEvents = computed(() => events.value.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase())))
+
+const changeStatus = (id: string, status: 'approved' | 'rejected') => {
+  const selectedEvent = events.value.find(event => event.id === id)
+  if (selectedEvent)
+    selectedEvent.status = status
+}
 
 const isVerificationEnabled = ref(true)
 </script>
@@ -32,7 +53,7 @@ const isVerificationEnabled = ref(true)
         </div>
       </div>
 
-      <EventTable class="mt-[36px]" :events="events" />
+      <EventTable class="mt-[36px]" :events="searchedEvents" @approve="id => changeStatus(id, 'approved')" @reject="id => changeStatus(id, 'rejected')" />
     </div>
 
     <InstructionParagraph class="col-span-1 mt-[54px]">
