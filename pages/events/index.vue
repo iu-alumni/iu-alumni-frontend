@@ -1,31 +1,27 @@
 <script setup lang="ts">
 import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
+import LoadingContent from '~/components/common/LoadingContent.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import EventTable from '~/components/event/EventTable.vue';
 import { useEventsStore } from '~/store/events';
-import { testEvents } from '~/tests/data';
-import Id from './[id].vue';
 
-/*
 const eventsStore = useEventsStore()
-
 
 const events = eventsStore.events
 
-onMounted(() => {
-  eventsStore.updateEvents()
-})
-*/
+const isLoading = ref(true)
 
-const events = ref(testEvents)
+onMounted(() => {
+  eventsStore.updateEvents().then(() => isLoading.value = false)
+})
 
 const search = ref('')
 
-const searchedEvents = computed(() => events.value.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase())))
+const searchedEvents = computed(() => events.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase())))
 
 const changeStatus = (id: string, status: 'approved' | 'rejected') => {
-  const selectedEvent = events.value.find(event => event.id === id)
+  const selectedEvent = events.find(event => event.id === id)
   if (selectedEvent)
     selectedEvent.status = status
 }
@@ -53,7 +49,9 @@ const isVerificationEnabled = ref(true)
         </div>
       </div>
 
-      <EventTable class="mt-[36px]" :events="searchedEvents" @approve="id => changeStatus(id, 'approved')" @reject="id => changeStatus(id, 'rejected')" />
+      <LoadingContent :is-loading="isLoading">
+        <EventTable class="mt-[36px]" :events="searchedEvents" @approve="id => changeStatus(id, 'approved')" @reject="id => changeStatus(id, 'rejected')" />
+      </LoadingContent> 
     </div>
 
     <InstructionParagraph class="col-span-1 mt-[54px]">

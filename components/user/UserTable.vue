@@ -7,10 +7,13 @@ import type { User } from '~/types';
 import SmallIcon from '../common/SmallIcon.vue';
 import DefaultIcon from '../common/DefaultIcon.vue';
 import DefaultSeparator from '../common/DefaultSeparator.vue';
+import { useUsersStore } from '~/store/users';
 
 defineProps<{
   users: User[]
 }>()
+
+const usersStore = useUsersStore()
 
 const emit = defineEmits(['ban'])
 
@@ -35,12 +38,12 @@ const edit = (id: string) => {
         </div>
 
         <div class="flex items-center gap-[24px]">
-          <template v-if="user.isRegistered && !user.isBanned">
+          <template v-if="!usersStore.isUserBanned(user.id)">
             <SmallIcon :src="Edit" @click="edit(user.id)" />
             <SmallIcon :src="Reject" @click="emit('ban', user.id)" />
           </template>
 
-          <template v-else-if="user.isRegistered && user.isBanned">
+          <template v-else-if="usersStore.isUserBanned(user.id)">
             <SmallIcon :src="Edit" @click="edit(user.id)" />
             <SmallIcon :src="Rereject" @click="emit('ban', user.id)" />
           </template>
