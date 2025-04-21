@@ -1,25 +1,34 @@
 <script setup lang="ts">
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
+import LoadingContent from '~/components/common/LoadingContent.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import UploadFile from '~/components/common/UploadFile.vue';
 import UserTable from '~/components/user/UserTable.vue';
 import { useUsersStore } from '~/store/users';
+import type { User } from '~/types';
 
 const search = ref('')
 
 const usersStore = useUsersStore()
 
-const users = usersStore.users
+const users = ref([] as User[])
+
+const isLoading = ref(true)
+
+onMounted(() => {
+  usersStore.updateUsers().then(() => {
+    isLoading.value = false
+    users.value = usersStore.users
+  })
+})
 
 const searchedUsers = computed(
-  () => users
+  () => users.value
     .filter(user => (user.name.toLowerCase() + user.email.toLowerCase()).includes(search.value.toLowerCase()))
 )
 
-const banUser = (id: string) => {
-  const selectedUser = users.find(user => user.id === id)
-  if (selectedUser)
-    selectedUser.isBanned = !selectedUser.isBanned
+const banUser = (userId: string) => {
+  usersStore.changeUserBanStatus(userId)
 }
 </script>
 
@@ -40,7 +49,9 @@ const banUser = (id: string) => {
         </div>
       </div>
 
-      <UserTable class="mt-[36px]" :users="searchedUsers" @ban="banUser" />
+      <LoadingContent :is-loading="isLoading">
+        <UserTable class="mt-[36px]" :users="searchedUsers" @ban="banUser" />
+      </LoadingContent>
     </div>
 
     <InstructionParagraph class="col-span-1 mt-[54px]">
