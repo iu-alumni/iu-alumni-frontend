@@ -17,6 +17,7 @@ const isLoading = ref(true)
 
 onMounted(async () => {
   user.value = await usersStore.getUserById(route.params.id as string)
+  console.log(user.value)
   isLoading.value = false
 })
 

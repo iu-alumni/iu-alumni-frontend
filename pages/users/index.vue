@@ -3,22 +3,27 @@ import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import LoadingContent from '~/components/common/LoadingContent.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import UploadFile from '~/components/common/UploadFile.vue';
+import UserTable from '~/components/user/UserTable.vue';
 import { useUsersStore } from '~/store/users';
+import type { User } from '~/types';
 
 const search = ref('')
 
 const usersStore = useUsersStore()
 
-const users = usersStore.users
+const users = ref([] as User[])
 
 const isLoading = ref(true)
 
 onMounted(() => {
-  usersStore.updateUsers().then(() => isLoading.value = false)
+  usersStore.updateUsers().then(() => {
+    isLoading.value = false
+    users.value = usersStore.users
+  })
 })
 
 const searchedUsers = computed(
-  () => users
+  () => users.value
     .filter(user => (user.name.toLowerCase() + user.email.toLowerCase()).includes(search.value.toLowerCase()))
 )
 

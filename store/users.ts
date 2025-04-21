@@ -10,20 +10,29 @@ export const useUsersStore = defineStore('users', {
 
   getters: {
     isUserBanned: (state: any) => {
-      return (userId: string) => state.bannedUsersIds.includes(userId)
+      return (userId: string) => state.bannedUsersIds.has(userId)
     }
   },
 
   actions: {
     async updateUsers() {
-      let bannedUsers
-      [this.users, bannedUsers] = await Promise.all([usersInstance.listUsers(), usersInstance.listBannedUsers()])
+      let allUsers, bannedUsers
+      [allUsers, bannedUsers] = await Promise.all([usersInstance.listUsers().then(), usersInstance.listBannedUsers()])
 
       this.bannedUsersIds = new Set(bannedUsers.map(user => user.id))
+      this.users = allUsers.map(user => {
+        user.name = user.first_name + ' ' + user.last_name
+        user.email = user.first_name.charAt(0).toLowerCase() + '.' + user.last_name.toLowerCase() + "@innopolis.university" // TODO ask Ahmad to add emails to profiles
+        return user
+      })
     },
 
     getUserById (userId: string) {
-      return usersInstance.getUserById(userId)
+      return usersInstance.getUserById(userId).then(user => {
+        user.name = user.first_name + ' ' + user.last_name
+        user.email = user.first_name.charAt(0).toLowerCase() + '.' + user.last_name.toLowerCase() + "@innopolis.university" // TODO ask Ahmad to add emails to profiles
+        return user
+      })
     },
 
     changeUserBanStatus (userId: string) {
