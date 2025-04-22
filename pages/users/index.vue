@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { uploadAlumniXls } from '~/api/auth';
+import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import LoadingContent from '~/components/common/LoadingContent.vue';
 import TextInput from '~/components/common/TextInput.vue';
@@ -30,6 +32,16 @@ const searchedUsers = computed(
 const banUser = (userId: string) => {
   usersStore.changeUserBanStatus(userId)
 }
+
+const handleXlsUpload = async (file: File) => {
+  await uploadAlumniXls(file)
+  isLoading.value = true
+
+  usersStore.updateUsers().then(() => {
+    isLoading.value = false
+    users.value = usersStore.users
+  })
+}
 </script>
 
 <template>
@@ -43,8 +55,11 @@ const banUser = (userId: string) => {
 
         <div class="flex gap-[24px]">
           <TextInput v-model="search" class="max-w-[244px]" placeholder="Search..." />
-          <UploadFile size="small">
-            Add&nbsp;alumni
+          <DefaultButton size="small">
+            Add Alumni
+          </DefaultButton>
+          <UploadFile :onUpload="handleXlsUpload">
+            Import from XLS
           </UploadFile>
         </div>
       </div>
