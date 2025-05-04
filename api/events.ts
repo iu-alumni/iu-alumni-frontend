@@ -22,7 +22,7 @@ function deleteEvent (eventId: string): Promise<any> {
 }
 
 function listEventParticipants (eventId: string): Promise<User[]> {
-  return axiosInstance.get(`events/${eventId}/participant`).then(req => req.data)
+  return axiosInstance.get(`events/${eventId}/participants`).then(req => req.data)
 }
 
 function approveEvent(eventId: string): Promise<Event> {

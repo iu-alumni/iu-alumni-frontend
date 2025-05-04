@@ -37,18 +37,18 @@ const edit = (id: string) => {
         </div>
 
         <div class="flex items-center gap-[24px]">
-          <template v-if="event.status === 'approved'">
+          <template v-if="event.approved">
             <SmallIcon :src="Edit" @click="edit(event.id)" />
             <SmallIcon :src="Approve"/>
           </template>
 
-          <template v-else-if="event.status === 'pending'">
+          <template v-else-if="event.approved === null">
             <SmallIcon :src="Edit" @click="edit(event.id)" />
             <SmallIcon :src="Approve" @click="emit('approve', event.id)"/>
             <SmallIcon :src="Reject" @click="emit('reject', event.id)"/>
           </template>
 
-          <template v-else-if="event.status === 'rejected'">
+          <template v-else">
             <SmallIcon :src="Edit" @click="edit(event.id)" />
             <SmallIcon :src="Reject"/>
           </template>
