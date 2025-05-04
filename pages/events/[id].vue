@@ -44,9 +44,9 @@ const reject = async (id: string) => {
   <LoadingContent :is-loading="isLoading">
     <div class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]">
       <div class="col-span-2">
-        <EntityHeader :logo="event.img" :title="event.name" :subtitle="event.user.name">
+        <EntityHeader :logo="event.img" :title="event.title" :subtitle="event.user.name">
           <template #title>
-            {{ event.name }}
+            {{ event.title }}
           </template>
           <template #subittle>
             <div class="flex gap-[10px] items-center">

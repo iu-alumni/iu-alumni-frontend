@@ -19,8 +19,8 @@ const isLoading = ref(true);
 
 onMounted(() => {
     usersStore.updateUsers().then(() => {
-        isLoading.value = false;
         users.value = usersStore.users;
+        isLoading.value = false;
     });
 });
 

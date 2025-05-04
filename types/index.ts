@@ -6,7 +6,7 @@ export type Sticker = {
 
 export type Event = {
     id: string;
-    name: string;
+    title: string;
     location: string;
     img: string;
     date: Date | string;

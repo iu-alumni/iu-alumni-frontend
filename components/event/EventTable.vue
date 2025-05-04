@@ -26,7 +26,7 @@ const edit = (id: string) => {
         <div class="flex items-center gap-[24px]">
           <DefaultIcon :src="event.img" with-shadow />
           <span class="paragraph">
-            {{ event.name }}
+            {{ event.title }}
           </span>
           <span class="button-text">
             {{ event.location }}

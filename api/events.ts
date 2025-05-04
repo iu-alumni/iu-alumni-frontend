@@ -2,7 +2,7 @@ import type { Event, EventApprovalSettings, User } from "~/types";
 import axiosInstance from ".";
 
 function listEvents (): Promise<Event[]> {
-  return axiosInstance.get('events/').then(req => req.data)
+  return axiosInstance.get('admin/events').then(req => req.data)
 }
 
 function getEventById (eventId: string): Promise<Event> {

@@ -6,20 +6,24 @@ import TextInput from '~/components/common/TextInput.vue';
 import EventTable from '~/components/event/EventTable.vue';
 import { useEventsStore } from '~/store/events';
 import { ref, computed, onMounted } from 'vue';
+import type { Event } from '~/types';
 
 const eventsStore = useEventsStore()
 
-const events = eventsStore.events
+const events = ref([] as Event[])
 
 const isLoading = ref(true)
 
 onMounted(() => {
-  eventsStore.updateEvents().then(() => isLoading.value = false)
+  eventsStore.updateEvents().then(() => {
+    events.value = eventsStore.events
+    isLoading.value = false
+  })
 })
 
 const search = ref('')
 
-const searchedEvents = computed(() => events.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase())))
+const searchedEvents = computed(() => events.value.filter(event => event.title.toLowerCase().includes(search.value.toLowerCase())))
 
 const changeStatus = async (id: string, status: 'approved' | 'rejected') => {
   if (status === 'approved') {
