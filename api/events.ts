@@ -1,4 +1,4 @@
-import type { Event, User } from "~/types";
+import type { Event, EventApprovalSettings, User } from "~/types";
 import axiosInstance from ".";
 
 function listEvents (): Promise<Event[]> {
@@ -22,7 +22,23 @@ function deleteEvent (eventId: string): Promise<any> {
 }
 
 function listEventParticipants (eventId: string): Promise<User[]> {
-  return axiosInstance.delete(`events/${eventId}/participant`).then(req => req.data)
+  return axiosInstance.get(`events/${eventId}/participant`).then(req => req.data)
+}
+
+function approveEvent(eventId: string): Promise<Event> {
+  return axiosInstance.post(`admin/events/approve/${eventId}`).then(req => req.data)
+}
+
+function declineEvent(eventId: string): Promise<Event> {
+  return axiosInstance.post(`admin/events/decline/${eventId}`).then(req => req.data)
+}
+
+function getEventApprovalSettings(): Promise<EventApprovalSettings> {
+  return axiosInstance.get('admin/settings/events').then(req => req.data)
+}
+
+function toggleAutoApprove(): Promise<EventApprovalSettings> {
+  return axiosInstance.post('admin/settings/events/toggle-auto-approve').then(req => req.data)
 }
 
 export default {
@@ -32,4 +48,8 @@ export default {
   updateEvent,
   deleteEvent,
   listEventParticipants,
+  approveEvent,
+  declineEvent,
+  getEventApprovalSettings,
+  toggleAutoApprove,
 }

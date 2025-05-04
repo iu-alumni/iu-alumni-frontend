@@ -29,12 +29,14 @@ const editUser = (id: string) => {
   navigateTo(`/users/${id}`)
 }
 
-const approve = (id: string) => {
-  event.value.status = 'approved'
+const approve = async (id: string) => {
+  await eventsStore.approveEvent(id)
+  event.value = await eventsStore.getEventById(id)
 }
 
-const reject = (id: string) => {
-  event.value.status = 'rejected'
+const reject = async (id: string) => {
+  await eventsStore.declineEvent(id)
+  event.value = await eventsStore.getEventById(id)
 }
 </script>
 
