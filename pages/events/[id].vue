@@ -29,12 +29,14 @@ const editUser = (id: string) => {
   navigateTo(`/users/${id}`)
 }
 
-const approve = (id: string) => {
-  event.value.status = 'approved'
+const approve = async (id: string) => {
+  await eventsStore.approveEvent(id)
+  event.value = await eventsStore.getEventById(id)
 }
 
-const reject = (id: string) => {
-  event.value.status = 'rejected'
+const reject = async (id: string) => {
+  await eventsStore.declineEvent(id)
+  event.value = await eventsStore.getEventById(id)
 }
 </script>
 
@@ -42,9 +44,9 @@ const reject = (id: string) => {
   <LoadingContent :is-loading="isLoading">
     <div class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]">
       <div class="col-span-2">
-        <EntityHeader :logo="event.img" :title="event.name" :subtitle="event.user.name">
+        <EntityHeader :logo="event.img" :title="event.title" :subtitle="event.user.name">
           <template #title>
-            {{ event.name }}
+            {{ event.title }}
           </template>
           <template #subittle>
             <div class="flex gap-[10px] items-center">

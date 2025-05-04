@@ -5,28 +5,39 @@ import LoadingContent from '~/components/common/LoadingContent.vue';
 import TextInput from '~/components/common/TextInput.vue';
 import EventTable from '~/components/event/EventTable.vue';
 import { useEventsStore } from '~/store/events';
+import { ref, computed, onMounted } from 'vue';
+import type { Event } from '~/types';
 
 const eventsStore = useEventsStore()
 
-const events = eventsStore.events
+const events = ref([] as Event[])
 
 const isLoading = ref(true)
 
 onMounted(() => {
-  eventsStore.updateEvents().then(() => isLoading.value = false)
+  eventsStore.updateEvents().then(() => {
+    events.value = eventsStore.events
+    isLoading.value = false
+  })
 })
 
 const search = ref('')
 
-const searchedEvents = computed(() => events.filter(event => event.name.toLowerCase().includes(search.value.toLowerCase())))
+const searchedEvents = computed(() => events.value.filter(event => event.title.toLowerCase().includes(search.value.toLowerCase())))
 
-const changeStatus = (id: string, status: 'approved' | 'rejected') => {
-  const selectedEvent = events.find(event => event.id === id)
-  if (selectedEvent)
-    selectedEvent.status = status
+const changeStatus = async (id: string, status: 'approved' | 'rejected') => {
+  if (status === 'approved') {
+    await eventsStore.approveEvent(id)
+  } else if (status === 'rejected') {
+    await eventsStore.declineEvent(id)
+  }
 }
 
-const isVerificationEnabled = ref(true)
+const isVerificationEnabled = computed(() => eventsStore.approvalSettings?.auto_approve ?? false)
+
+const toggleVerification = async () => {
+  await eventsStore.toggleAutoApprove()
+}
 </script>
 
 <template>
@@ -40,11 +51,11 @@ const isVerificationEnabled = ref(true)
 
         <div class="flex gap-[24px]">
           <TextInput v-model="search" class="max-w-[244px]" placeholder="Search..." />
-          <DefaultButton v-if="isVerificationEnabled" size="small" @click="isVerificationEnabled = false">
-            Verify&nbsp;(On)
+          <DefaultButton v-if="isVerificationEnabled" size="small" @click="toggleVerification">
+            Auto-approve&nbsp;(On)
           </DefaultButton>
-          <DefaultButton v-else="isVerificationEnabled" size="small" type="inactive" @click="isVerificationEnabled = true">
-            Verify&nbsp;(Off)
+          <DefaultButton v-else size="small" type="inactive" @click="toggleVerification">
+            Auto-approve&nbsp;(Off)
           </DefaultButton>
         </div>
       </div>

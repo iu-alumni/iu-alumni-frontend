@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import eventsInstance from "~/api/events";
-import type { Event } from "~/types";
+import type { Event, EventApprovalSettings } from "~/types";
 
 export const useEventsStore = defineStore('events', {
   state: () => ({
-    events: [] as Event[]
+    events: [] as Event[],
+    approvalSettings: null as EventApprovalSettings | null
   }),
 
   actions: {
@@ -30,6 +31,26 @@ export const useEventsStore = defineStore('events', {
 
     listParticipants(eventId: string) {
       return eventsInstance.listEventParticipants(eventId)
+    },
+
+    async approveEvent(eventId: string) {
+      await eventsInstance.approveEvent(eventId)
+      await this.updateEvents()
+    },
+
+    async declineEvent(eventId: string) {
+      await eventsInstance.declineEvent(eventId)
+      await this.updateEvents()
+    },
+
+    async fetchApprovalSettings() {
+      this.approvalSettings = await eventsInstance.getEventApprovalSettings()
+      return this.approvalSettings
+    },
+
+    async toggleAutoApprove() {
+      this.approvalSettings = await eventsInstance.toggleAutoApprove()
+      return this.approvalSettings
     }
   }
 })
