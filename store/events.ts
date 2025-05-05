@@ -8,13 +8,15 @@ export const useEventsStore = defineStore('events', {
     approvalSettings: null as EventApprovalSettings | null
   }),
 
+  getters: {
+      getEventById: (state) => {
+        return (eventId: string) => state.events.find((event) => event.id === eventId) as Event
+      }
+  },
+
   actions: {
     async updateEvents() {
       this.events = await eventsInstance.listEvents()
-    },
-
-    getEventById(eventId: string) {
-      return eventsInstance.getEventById(eventId)
     },
 
     updateEvent(eventId: string, updatedEvent: Event) {
@@ -29,8 +31,13 @@ export const useEventsStore = defineStore('events', {
       return eventsInstance.deleteEvent(eventId)
     },
 
-    listParticipants(eventId: string) {
-      return eventsInstance.listEventParticipants(eventId)
+    async listParticipants(eventId: string) {
+      const allParticipants = await eventsInstance.listEventParticipants(eventId)
+      return allParticipants.map(participant => {
+        participant.name = participant.first_name + ' ' + participant.last_name
+        participant.email = participant.first_name.charAt(0).toLowerCase() + '.' + participant.last_name.toLowerCase() + "@innopolis.university"
+        return participant
+      })
     },
 
     async approveEvent(eventId: string) {

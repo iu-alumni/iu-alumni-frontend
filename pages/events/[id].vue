@@ -7,21 +7,24 @@ import Edit from '@/assets/icons/misc/button__edit.svg'
 import EventParticipants from '~/components/event/EventParticipants.vue';
 import { useEventsStore } from '~/store/events';
 import LoadingContent from '~/components/common/LoadingContent.vue';
+import { useUsersStore } from '~/store/users';
 
 const route = useRoute()
 
 const eventsStore = useEventsStore()
+
+const usersStore = useUsersStore()
 
 const event = ref()
 
 const isLoading = ref(true)
 
 onMounted(async () => {
-  let participants
-  [event.value, participants] = await Promise.all(
-    [eventsStore.getEventById(route.params.id as string), eventsStore.listParticipants(route.params.id as string)]
-  ) 
+  const eventId = route.params.id as string
+  event.value = eventsStore.getEventById(eventId)
+  const [participants, owner] = await Promise.all([eventsStore.listParticipants(eventId), usersStore.getUserById(event.value.owner_id)])
   event.value.participants = participants
+  event.value.user = owner
   isLoading.value = false
 })
 
@@ -30,13 +33,15 @@ const editUser = (id: string) => {
 }
 
 const approve = async (id: string) => {
-  await eventsStore.approveEvent(id)
-  event.value = await eventsStore.getEventById(id)
+  await eventsStore.approveEvent(id).then(() => {
+    event.value.approved = true
+  })
 }
 
 const reject = async (id: string) => {
-  await eventsStore.declineEvent(id)
-  event.value = await eventsStore.getEventById(id)
+  await eventsStore.declineEvent(id).then(() => {
+    event.value.approved = false
+  })
 }
 </script>
 
@@ -55,17 +60,17 @@ const reject = async (id: string) => {
             </div>
           </template>
 
-          <template #buttons v-if="event.status === 'approved'">
+          <template #buttons v-if="event.approved">
             <DefaultButton size="small">
               Approved
             </DefaultButton>
           </template>
-          <template #buttons v-else-if="event.status === 'rejected'">
+          <template #buttons v-else-if="event.approved === null">
             <DefaultButton type="error" size="small">
               Rejected
             </DefaultButton>
           </template>
-          <template #buttons v-else-if="event.status === 'pending'">
+          <template #buttons v-else>
             <DefaultButton size="small" @click="approve(event.id)">
               Approve
             </DefaultButton>
@@ -79,9 +84,9 @@ const reject = async (id: string) => {
       <div class="col-span-1" />
 
       <div class="col-span-2" >
-        <div class="flex justify-between gap-[24px]">
-          <h3>Time: <span class="text-bluegray">{{ event.date }}</span></h3>
-          <h3>Location: <span class="text-bluegray">{{ event.location }}</span></h3>
+        <div class="flex justify-between gap-[24px] mt-[12px]">
+          <h4>Time: <span class="text-bluegray">{{ event.date }}</span></h4>
+          <h4>Location: <span class="text-bluegray">{{ event.location }}</span></h4>
         </div>
 
         <EntityParagraph class="mt-[18px]">
