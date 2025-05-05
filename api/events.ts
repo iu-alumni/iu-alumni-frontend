@@ -5,10 +5,6 @@ function listEvents (): Promise<Event[]> {
   return axiosInstance.get('admin/events').then(req => req.data)
 }
 
-function getEventById (eventId: string): Promise<Event> {
-  return axiosInstance.get(`events/${eventId}`).then(req => req.data)
-}
-
 function createEvent (event: Event): Promise<Event> {
   return axiosInstance.post('events/', event).then(req => req.data)
 }
@@ -43,7 +39,6 @@ function toggleAutoApprove(): Promise<EventApprovalSettings> {
 
 export default {
   listEvents,
-  getEventById,
   createEvent,
   updateEvent,
   deleteEvent,

@@ -26,10 +26,15 @@ const search = ref('')
 const searchedEvents = computed(() => events.value.filter(event => event.title.toLowerCase().includes(search.value.toLowerCase())))
 
 const changeStatus = async (id: string, status: 'approved' | 'rejected') => {
+  const event = eventsStore.getEventById(id)
   if (status === 'approved') {
-    await eventsStore.approveEvent(id)
+    await eventsStore.approveEvent(id).then(() => {
+      event.approved = true
+    })
   } else if (status === 'rejected') {
-    await eventsStore.declineEvent(id)
+    await eventsStore.declineEvent(id).then(() => {
+      event.approved = false
+    })
   }
 }
 
