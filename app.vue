@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { useCounterStore } from "@/store/counter";
-
-const counter = useCounterStore();
+import Toaster from '@/components/ui/toast/Toaster.vue'
 </script>
 
 <template>
-    <p>Count: {{ counter.count }}</p>
-    <Button @click="counter.increment">Click me</Button>
+  <ClientOnly>
+    <Toaster />
+  </ClientOnly>
+
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
