@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Logo from "@/assets/icons/logo.svg";
-import { serverLogin } from "~/api/auth";
+import authInstance from "~/api/auth";
 import DefaultButton from "~/components/common/DefaultButton.vue";
 import TextInput from "~/components/common/TextInput.vue";
 import { resetErrorMessage } from "~/misc/validation";
@@ -11,7 +11,7 @@ definePageMeta({
 });
 
 const signIn = () => {
-    serverLogin(credentials.value.email, credentials.value.password)
+    authInstance.serverLogin(credentials.value.email, credentials.value.password)
         .then((res) => $auth.login(res.data.access_token))
         .then(() => {
             navigateTo("/users");
