@@ -20,6 +20,7 @@ const event = ref()
 const isLoading = ref(true)
 
 onMounted(async () => {
+  await eventsStore.updateEvents()
   const eventId = route.params.id as string
   event.value = eventsStore.getEventById(eventId)
   const [participants, owner] = await Promise.all([eventsStore.listParticipants(eventId), usersStore.getUserById(event.value.owner_id)])
@@ -65,7 +66,7 @@ const reject = async (id: string) => {
               Approved
             </DefaultButton>
           </template>
-          <template #buttons v-else-if="event.approved === null">
+          <template #buttons v-else-if="event.approved !== null">
             <DefaultButton type="error" size="small">
               Rejected
             </DefaultButton>

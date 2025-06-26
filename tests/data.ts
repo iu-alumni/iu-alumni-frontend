@@ -22,10 +22,11 @@ export const testStickers: Sticker[] = [
 export const testEvents: Event[] = [
   {
     id: '001',
-    name: 'Adakov\'s lecture',
+    title: 'Adakov\'s lecture',
     location: 'UAE, Dubai',
     img: '',
     date: '23:59 01.01.2024',
+    owner_id: '001',
     user: {
       id: '001',
       name: 'Boris Adakov',
@@ -37,6 +38,8 @@ export const testEvents: Event[] = [
       activities: [],
       isRegistered: true,
       isBanned: false,
+      first_name: "",
+      last_name: ""
     },
     descrption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam tortor ipsum, sed vestibulum mauris sodales nec.',
     participants: [
@@ -51,6 +54,8 @@ export const testEvents: Event[] = [
         activities: [],
         isRegistered: true,
         isBanned: false,
+        first_name: "",
+        last_name: ""
       },
       {
         id: '003',
@@ -63,16 +68,20 @@ export const testEvents: Event[] = [
         activities: [],
         isRegistered: true,
         isBanned: false,
+        first_name: "",
+        last_name: ""
       },
     ],
     status: 'approved',
+    approved: null
   },
   {
     id: '002',
-    name: 'Adakov\'s lecture №2',
+    title: 'Adakov\'s lecture №2',
     location: 'UAE, Dubai',
     img: '',
     date: '23:59 01.01.2024',
+    owner_id: '001',
     user: {
       id: '001',
       name: 'Boris Adakov',
@@ -84,6 +93,8 @@ export const testEvents: Event[] = [
       activities: [],
       isRegistered: true,
       isBanned: false,
+      first_name: "",
+      last_name: ""
     },
     descrption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam tortor ipsum, sed vestibulum mauris sodales nec.',
     participants: [
@@ -98,9 +109,12 @@ export const testEvents: Event[] = [
         activities: [],
         isRegistered: true,
         isBanned: false,
+        first_name: "",
+        last_name: ""
       },
     ],
     status: 'pending',
+    approved: null
   },
 ]
 
@@ -147,6 +161,8 @@ export const testUsers: User[] = [
   {
     id: '001',
     name: 'Boris Adakov',
+    first_name: 'Boris',
+    last_name: 'Adakov',
     email: 'b.adakov@innopolis.university',
     avatar: '',
     biography: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam tortor ipsum, sed vestibulum mauris sodales nec.',
@@ -167,6 +183,8 @@ export const testUsers: User[] = [
     activities: [],
     isRegistered: true,
     isBanned: false,
+    first_name: "",
+    last_name: ""
   },
   {
     id: '003',
@@ -179,5 +197,7 @@ export const testUsers: User[] = [
     activities: [],
     isRegistered: true,
     isBanned: false,
+    first_name: "",
+    last_name: ""
   },
 ]

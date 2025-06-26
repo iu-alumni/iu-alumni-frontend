@@ -14,6 +14,7 @@ export type Event = {
     descrption: string;
     participants: User[];
     status: "approved" | "pending" | "rejected";
+    owner_id?: string
     approved: boolean | null
 };
 
