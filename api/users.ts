@@ -1,8 +1,13 @@
 import type { User } from "~/types";
 import axiosInstance from ".";
 
-function listUsers (): Promise<User[]> {
-  return axiosInstance.get('profile/all').then(req => req.data)
+interface ListUsersParams {
+  banned?: boolean | null;
+  verified?: boolean | null;
+}
+
+function listUsers(params?: ListUsersParams): Promise<User[]> {
+  return axiosInstance.get('/admin/users', { params }).then(req => req.data)
 }
 
 function getUserById (userId: string): Promise<User> {
@@ -21,10 +26,24 @@ function unbanUser (userId: string): Promise<User> {
   return axiosInstance.post(`admin/unban/${userId}`).then(req => req.data)
 }
 
+interface VerifyUserParams {
+  email: string;
+}
+
+function verifyUser (email: string): Promise<User> {
+  return axiosInstance.post('admin/verify', { email }).then(req => req.data)
+}
+
+function unverifyUser (email: string): Promise<User> {
+  return axiosInstance.post('admin/unverify', { email }).then(req => req.data)
+}
+
 export default {
   listUsers,
   getUserById,
   listBannedUsers,
   banUser,
   unbanUser,
+  verifyUser,
+  unverifyUser,
 }
