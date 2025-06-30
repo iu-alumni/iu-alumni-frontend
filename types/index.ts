@@ -26,17 +26,23 @@ export type Activity = {
 
 export type User = {
     id: string;
-    name: string;
+    email: string;
+    hashed_password: string;
     first_name: string;
     last_name: string;
-    email: string;
-    avatar: string;
+    graduation_year: string;
+    location: string;
     biography: string;
-    stickers: Sticker[];
-    events: Event[];
-    activities: Activity[];
-    isRegistered: boolean;
-    isBanned: boolean;
+    show_location: boolean;
+    is_verified: boolean;
+    is_banned: boolean;
+    // Computed properties
+    name?: string;
+    avatar?: string;
+    stickers?: Sticker[];
+    events?: Event[];
+    activities?: Activity[];
+    isRegistered?: boolean;
 };
 
 export type EventApprovalSettings = {

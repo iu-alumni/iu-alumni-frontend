@@ -73,3 +73,18 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Docker
+
+```bash
+
+# 1. Build image
+docker build -t iu-alumni-frontend .
+
+# 2. Verify it exists
+docker images | grep iu-alumni-frontend
+
+# 3. Run Nuxt 3 SSR server
+docker run --rm -p 3000:3000 iu-alumni-frontend
+
+```
