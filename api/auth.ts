@@ -18,6 +18,19 @@ export async function uploadAlumniXls(file: File) {
     return response.data;
 }
 
+export async function uploadAlumniEmailsXls(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axiosInstance.post("/admin/upload-allowed-emails", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+
+    return response.data;
+}
+
 axiosInstance.interceptors.response.use(
     (response) => {
         // If the response is successful (status code 2xx), just return it

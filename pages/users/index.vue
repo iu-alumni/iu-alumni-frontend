@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { uploadAlumniXls } from '~/api/auth';
+import { uploadAlumniXls, uploadAlumniEmailsXls } from '~/api/auth';
 import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import LoadingContent from '~/components/common/LoadingContent.vue';
@@ -80,6 +80,20 @@ const handleXlsUpload = async (file: File) => {
     isLoading.value = false;
   }
 };
+
+const handleEmailXlsUpload = async (file: File) => {
+  try {
+    isLoading.value = true;
+    await uploadAlumniEmailsXls(file);
+    // await loadUsers();
+  } catch (error) {
+    console.error('Failed to upload XLS:', error);
+    // TODO: Add error notification
+  } finally {
+    isLoading.value = false;
+  }
+};
+// uploadAlumniEmailsXls
 </script>
 
 <template>
@@ -97,6 +111,9 @@ const handleXlsUpload = async (file: File) => {
           <DefaultButton size="small" class="whitespace-nowrap">
             Add Alumni
           </DefaultButton>
+          <UploadFile :onUpload="handleEmailXlsUpload">
+                        Import emails from XLS
+                    </UploadFile>
         </div>
       </div>
 

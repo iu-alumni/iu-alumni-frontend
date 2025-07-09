@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: 'https://iu-alumni-backend.onrender.com/',
+  // baseURL: 'https://iu-alumni-backend.onrender.com/',
+  baseURL: "http://194.164.235.177",
   timeout: 10000,
 })
 
