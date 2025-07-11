@@ -48,9 +48,6 @@ const toggleVerification = async () => {
 <template>
   <div class="grid grid-cols-3 px-[36px] gap-[80px]">
     <div class="col-span-2">
-      <h4 class="mb-[4px]">
-        Manage and verify events
-      </h4>
       <div class="flex justify-between gap-[24px]">
         <h2>Events</h2>
 
@@ -72,13 +69,25 @@ const toggleVerification = async () => {
 
     <InstructionParagraph class="col-span-1 mt-[54px]">
       <template #title>
-        How to manage?
+        Event Management Guide
       </template>
       <template #text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam tortor ipsum, sed vestibulum mauris sodales nec. Maecenas convallis id ipsum quis feugiat. 
-        Cras tincidunt tellus non libero luctus lacinia. Donec vestibulum ullamcorper posuere. Ut vitae ultricies augue. Sed quis tristique massa, ut cursus felis. Mauris sit amet leo sit amet sapien tempor commodo in vitae ex. 
-        Nam euismod ipsum at neque dapibus imperdiet. Phasellus a malesuada quam, sit amet facilisis erat. Aliquam at sem odio. Quisque volutpat hendrerit feugiat. 
-        Vestibulum non urna condimentum, ultricies nisl vel, auctor velit. Etiam at laoreet erat.
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium text-gray-900">Filtering Events</h4>
+            <p class="text-sm text-gray-600">
+              Use the search bar at the top of the event list to filter by event name.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">Event Actions</h4>
+            <ul class="mt-2 space-y-2 text-sm text-gray-600 list-disc pl-5">
+              <li><span class="font-medium">Approve:</span> Approve an event to allow it to be seen by users</li>
+              <li><span class="font-medium">Reject:</span> Reject an event to hide it from users</li>
+              <li><span class="font-medium">Edit:</span> View and edit event details</li>
+            </ul>
+          </div>
+        </div>
       </template>
     </InstructionParagraph>
   </div>

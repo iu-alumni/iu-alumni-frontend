@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: 'https://iu-alumni-backend.onrender.com/',
+  baseURL: 'https://www.xdkomel.ru/',
   timeout: 10000,
 })
 

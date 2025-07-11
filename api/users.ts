@@ -1,4 +1,4 @@
-import type { User } from "~/types";
+import type { User, UserProfile } from "~/types";
 import axiosInstance from ".";
 
 interface ListUsersParams {
@@ -10,7 +10,7 @@ function listUsers(params?: ListUsersParams): Promise<User[]> {
   return axiosInstance.get('/admin/users', { params }).then(req => req.data)
 }
 
-function getUserById (userId: string): Promise<User> {
+function getUserById (userId: string): Promise<UserProfile> {
   return axiosInstance.get(`profile/${userId}`).then(req => req.data)
 }
 
@@ -38,6 +38,19 @@ function unverifyUser (email: string): Promise<User> {
   return axiosInstance.post('admin/unverify', { email }).then(req => req.data)
 }
 
+function uploadAllowedEmailsXls (file: File): Promise<{success: true, message: string}> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = axiosInstance.post("/admin/upload-allowed-emails", formData, {
+      headers: {
+          "Content-Type": "multipart/form-data",
+      },
+  });
+
+  return response.then(res => res.data);
+}
+
 export default {
   listUsers,
   getUserById,
@@ -46,4 +59,5 @@ export default {
   unbanUser,
   verifyUser,
   unverifyUser,
+  uploadAllowedEmailsXls
 }

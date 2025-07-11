@@ -6,30 +6,45 @@ import SmallIcon from '~/components/common/SmallIcon.vue';
 import Edit from '@/assets/icons/misc/button__edit.svg'
 import EventParticipants from '~/components/event/EventParticipants.vue';
 import { useEventsStore } from '~/store/events';
-import LoadingContent from '~/components/common/LoadingContent.vue';
 import { useUsersStore } from '~/store/users';
+import type { EventParticipant } from '~/types';
 
 const route = useRoute()
-
 const eventsStore = useEventsStore()
-
 const usersStore = useUsersStore()
 
 const event = ref()
-
+const owner = ref()
+const participants = ref<EventParticipant[]>([])
 const isLoading = ref(true)
+
+const formatDate = (dateString: string | Date) => {
+  return new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date(dateString))
+}
 
 onMounted(async () => {
   const eventId = route.params.id as string
-  event.value = eventsStore.getEventById(eventId)
-  const [participants, owner] = await Promise.all([eventsStore.listParticipants(eventId), usersStore.getUserById(event.value.owner_id)])
-  event.value.participants = participants
-  event.value.user = owner
+  event.value = await eventsStore.getEventById(eventId)
+  if (event.value) {
+    const [participantsData, ownerData] = await Promise.all([
+      eventsStore.listParticipants(eventId),
+      usersStore.getUserById(event.value.owner_id)
+    ])
+    participants.value = participantsData
+    owner.value = ownerData
+  }
   isLoading.value = false
 })
 
-const editUser = (id: string) => {
-  navigateTo(`/users/${id}`)
+const editEvent = () => {
+  // Implement edit functionality
+  console.log('Edit event', event.value.id)
 }
 
 const approve = async (id: string) => {
@@ -47,67 +62,118 @@ const reject = async (id: string) => {
 
 <template>
   <LoadingContent :is-loading="isLoading">
-    <div class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]">
+    <div v-if="event" class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]">
       <div class="col-span-2">
-        <EntityHeader :logo="event.img" :title="event.title" :subtitle="event.user.name">
+        <EntityHeader 
+          :logo="event.cover ? `data:image/jpeg;base64,${event.cover}` : ''" 
+          :title="event.title" 
+          :subtitle="owner?.first_name + ' ' + owner?.last_name"
+        >
           <template #title>
             {{ event.title }}
-          </template>
-          <template #subittle>
-            <div class="flex gap-[10px] items-center">
-              <span>{{ event.user.name }}</span>
-              <SmallIcon :src="Edit" @click="editUser(event.user.id)" />
-            </div>
+            <SmallIcon 
+              v-if="owner" 
+              :src="Edit" 
+              @click="editEvent" 
+              class="ml-2"
+            />
           </template>
 
-          <template #buttons v-if="event.approved">
-            <DefaultButton size="small">
-              Approved
-            </DefaultButton>
-          </template>
-          <template #buttons v-else-if="event.approved === null">
-            <DefaultButton type="error" size="small">
-              Rejected
-            </DefaultButton>
-          </template>
-          <template #buttons v-else>
-            <DefaultButton size="small" @click="approve(event.id)">
-              Approve
-            </DefaultButton>
-            <DefaultButton type="error" size="small" @click="reject(event.id)">
-              Reject
-            </DefaultButton>
+          <template #buttons>
+            <div v-if="event.approved" class="flex items-center gap-2">
+              <span class="text-sm font-medium text-green-600">Event Approved</span>
+            </div>
+            <div v-else class="flex items-center gap-2">
+              <span class="text-sm font-medium text-yellow-600">Pending Approval</span>
+            </div>
           </template>
         </EntityHeader>
       </div>
 
-      <div class="col-span-1" />
+      <div class="col-span-3 grid grid-cols-3 gap-6">
+        <div class="col-span-2">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="grid grid-cols-2 gap-6 mb-6">
+              <div>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">Date & Time</h4>
+                <p class="text-gray-900">{{ formatDate(event.datetime) }}</p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">Location</h4>
+                <p class="text-gray-900">
+                  {{ event.is_online ? 'Online Event' : event.location }}
+                </p>
+              </div>
+              <div v-if="event.cost > 0">
+                <h4 class="text-sm font-medium text-gray-500 mb-1">Cost</h4>
+                <p class="text-gray-900">${{ event.cost.toFixed(2) }}</p>
+              </div>
+              <div v-if="event.participants_ids?.length > 0">
+                <h4 class="text-sm font-medium text-gray-500 mb-1">Participants</h4>
+                <p class="text-gray-900">{{ event.participants_ids.length }} registered</p>
+              </div>
+            </div>
 
-      <div class="col-span-2" >
-        <div class="flex justify-between gap-[24px] mt-[12px]">
-          <h4>Time: <span class="text-bluegray">{{ event.date }}</span></h4>
-          <h4>Location: <span class="text-bluegray">{{ event.location }}</span></h4>
+            <EntityParagraph class="mt-6">
+              <template #title>
+                Description
+              </template>
+              <template #text>
+                <div class="prose max-w-none">
+                  {{ event.description || 'No description provided.' }}
+                </div>
+              </template>
+            </EntityParagraph>
+          </div>
+
+          <EntityParagraph class="mt-6">
+            <template #title>
+              Participants ({{ participants.length }})
+            </template>
+            <template #text>
+              <EventParticipants v-if="participants.length > 0" :users="participants" />
+              <p v-else class="text-gray-500">No participants yet.</p>
+            </template>
+          </EntityParagraph>
         </div>
 
-        <EntityParagraph class="mt-[18px]">
-          <template #title>
-            Description
-          </template>
-          <template #text>
-            {{ event.descrption }}
-          </template>
-        </EntityParagraph>
-      </div>
+        <div class="space-y-6">
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-medium text-lg mb-4">Event Organizer</h3>
+            <div v-if="owner" class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                {{ owner.first_name[0] }}{{ owner.last_name[0] }}
+              </div>
+              <div>
+                <p class="font-medium">{{ owner.first_name }} {{ owner.last_name }}</p>
+                <p class="text-sm text-gray-500">Class of {{ owner.graduation_year }}</p>
+              </div>
+            </div>
+            <p v-else class="text-gray-500">Organizer information not available</p>
+          </div>
 
-      <EntityParagraph class="mt-[0px]">
-        <template #title>
-          Participants
-        </template>
-        <template #text>
-          <EventParticipants :users="event.participants" />
-        </template>
-      </EntityParagraph>
-      
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-medium text-lg mb-4">Event Actions</h3>
+            <div class="space-y-3">
+              <DefaultButton 
+                v-if="event.approved"
+                type="error" 
+                class="w-full justify-center"
+                @click="reject(event.id)"
+              >
+                Cancel Event
+              </DefaultButton>
+              <DefaultButton 
+                v-else
+                class="w-full justify-center"
+                @click="approve(event.id)"
+              >
+                Approve Event
+              </DefaultButton>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </LoadingContent>
 </template>
