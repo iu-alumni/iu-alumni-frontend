@@ -10,7 +10,8 @@ definePageMeta({
     layout: "login",
 });
 
-const signIn = () => {
+const signIn = (event: Event) => {
+    event.preventDefault();
     serverLogin(credentials.value.email, credentials.value.password)
         .then((res) => $auth.login(res.data.access_token))
         .then(() => {
@@ -39,7 +40,7 @@ resetErrorMessage(credentials, isError);
             class="p-[72px] pb-[114px] max-w-[504px] w-full mx-[36px] max-h-[664px] bg-white flex flex-col items-center gap-[92px] base-shadow"
         >
             <img :src="Logo" alt="Logo" class="max-w-[192px] self-center" />
-            <div class="flex flex-col gap-[15px] w-full">
+            <form @submit="signIn" class="flex flex-col gap-[15px] w-full">
                 <h3 class="mb-[5px]">Sign in</h3>
                 <TextInput v-model="credentials.email" placeholder="E-mail" />
                 <TextInput
@@ -49,11 +50,9 @@ resetErrorMessage(credentials, isError);
                     :is-error="isError"
                     :error-message="errorMessage"
                 />
-                <DefaultButton @click.prevent="signIn">
-                    Continue
-                </DefaultButton>
+                <DefaultButton>Continue</DefaultButton>
                 <button class="button-text">Forgot password?</button>
-            </div>
+            </form>
         </div>
     </div>
 </template>
