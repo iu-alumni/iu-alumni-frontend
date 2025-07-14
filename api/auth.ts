@@ -18,6 +18,11 @@ export async function uploadAlumniXls(file: File) {
     return response.data;
 }
 
+export async function addAdmin(email: string, password: string) {
+    const response = await axiosInstance.post("/auth/add-admin", { email, password });
+    return response.data;
+}
+
 axiosInstance.interceptors.response.use(
     (response) => {
         // If the response is successful (status code 2xx), just return it

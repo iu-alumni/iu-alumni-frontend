@@ -9,7 +9,7 @@ defineEmits(['open'])
 </script>
 
 <template>
-  <DefaultButton @click="$emit('open')">
+  <DefaultButton @click="$emit('open')" size="small">
     <slot name="button" />
   </DefaultButton>
 

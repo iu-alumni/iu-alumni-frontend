@@ -10,6 +10,7 @@ import { useUsersStore } from '~/store/users';
 import type { User } from '~/types';
 import { useToast } from '~/components/ui/toast/use-toast';
 import usersApi from '~/api/users';
+import AddAdmin from '~/components/user/AddAdmin.vue';
 
 const search = ref('');
 const usersStore = useUsersStore();
@@ -110,6 +111,7 @@ const handleAllowedEmailsUpload = async (file: File) => {
         >
           Upload Allowed Emails (Excel)
         </UploadFile>
+        <AddAdmin />
         </div>
       </div>
 
