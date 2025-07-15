@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { uploadAlumniXls } from '~/api/auth';
 import DefaultButton from '~/components/common/DefaultButton.vue';
 import InstructionParagraph from '~/components/common/InstructionParagraph.vue';
 import LoadingContent from '~/components/common/LoadingContent.vue';
@@ -9,11 +8,15 @@ import UploadFile from '~/components/common/UploadFile.vue';
 import UserTable from '~/components/user/UserTable.vue';
 import { useUsersStore } from '~/store/users';
 import type { User } from '~/types';
+import { useToast } from '~/components/ui/toast/use-toast';
+import usersApi from '~/api/users';
+import AddAdmin from '~/components/user/AddAdmin.vue';
 
 const search = ref('');
 const usersStore = useUsersStore();
 const users = ref<User[]>([]);
 const isLoading = ref(true);
+const { toast } = useToast();
 
 // Filters
 const activeFilters = ref({
@@ -29,7 +32,11 @@ const loadUsers = async () => {
     users.value = [...usersStore.users]; // Create a new array to trigger reactivity
   } catch (error) {
     console.error('Failed to load users:', error);
-    // TODO: Add error notification
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: 'Failed to load users. Please try again.'
+    });
   } finally {
     isLoading.value = false;
   }
@@ -68,14 +75,18 @@ const handleVerifyUser = ({ userId, isVerified }: { userId: string, isVerified: 
   console.log('User verification status toggled:', { userId, isVerified });
 };
 
-const handleXlsUpload = async (file: File) => {
+const handleAllowedEmailsUpload = async (file: File) => {
   try {
     isLoading.value = true;
-    await uploadAlumniXls(file);
-    await loadUsers();
+    const response = await usersApi.uploadAllowedEmailsXls(file);
+    
+    toast({
+      title: 'Emails uploaded successfully',
+      description: response.message,
+      variant: 'default',
+    });
   } catch (error) {
-    console.error('Failed to upload XLS:', error);
-    // TODO: Add error notification
+    console.error('Failed to upload allowed emails:', error);
   } finally {
     isLoading.value = false;
   }
@@ -85,7 +96,6 @@ const handleXlsUpload = async (file: File) => {
 <template>
   <div class="grid grid-cols-3 px-[36px] gap-[80px]">
     <div class="col-span-2">
-      <h4 class="mb-[4px]">Manage users' access</h4>
       <div class="flex justify-between items-center mb-6">
         <h2>Users</h2>
         <div class="flex items-center gap-4">
@@ -94,9 +104,14 @@ const handleXlsUpload = async (file: File) => {
             class="w-64"
             placeholder="Search by name or email..."
           />
-          <DefaultButton size="small" class="whitespace-nowrap">
-            Add Alumni
-          </DefaultButton>
+          <UploadFile
+          accept=".xlsx,.xls"
+          @upload="handleAllowedEmailsUpload"
+          class="w-full"
+        >
+          Upload Allowed Emails (Excel)
+        </UploadFile>
+        <AddAdmin />
         </div>
       </div>
 
@@ -128,6 +143,14 @@ const handleXlsUpload = async (file: File) => {
               <li><span class="font-medium">Ban/Unban:</span> Restrict or allow user access</li>
               <li><span class="font-medium">Edit:</span> View and edit user details</li>
             </ul>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">Allowed Emails</h4>
+            <p class="mt-2 text-sm text-gray-600">
+              The Excel file upload creates a database with encoded alumni emails in the backend. 
+              When a new user signs up, their email is encoded and checked against this database. 
+              If there's a match, the user is verified as a graduate. If not, they're marked as a non-graduate.
+            </p>
           </div>
         </div>
       </template>

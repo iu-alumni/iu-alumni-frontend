@@ -14,7 +14,7 @@ defineProps<{
         Stickers
       </h3>
 
-      <AwardSticker />
+      <!-- <AwardSticker /> -->
     </div>
 
     <div class="flex gap-[16px] min-w-0 min-h-0 overflow-x-auto pb-[8px]">

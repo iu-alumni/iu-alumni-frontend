@@ -1,4 +1,4 @@
-import type { Event, EventApprovalSettings, User } from "~/types";
+import type { Event, EventApprovalSettings, EventParticipant, User } from "~/types";
 import axiosInstance from ".";
 
 function listEvents (): Promise<Event[]> {
@@ -17,7 +17,7 @@ function deleteEvent (eventId: string): Promise<any> {
   return axiosInstance.delete(`events/${eventId}`).then(req => req.data)
 }
 
-function listEventParticipants (eventId: string): Promise<User[]> {
+function listEventParticipants (eventId: string): Promise<EventParticipant[]> {
   return axiosInstance.get(`events/${eventId}/participants`).then(req => req.data)
 }
 
