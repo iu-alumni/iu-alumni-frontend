@@ -8,8 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint --ext .js,.vue --ignore-pattern .gitignore --fix .",
-    "format": "prettier .  --write"
+    "lint": "eslint --ext .ts,.vue --ignore-pattern .gitignore --fix .",
+    "format": "prettier '**/*.{vue,ts}' --ignore-path .gitignore --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
@@ -36,6 +37,8 @@
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-vue": "^10.0.0",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "prettier": "3.5.3",
     "sass-embedded": "^1.85.1"
   }
