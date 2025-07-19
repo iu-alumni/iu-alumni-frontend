@@ -1,31 +1,35 @@
-# ── Builder Stage: install deps & build ───────────────────────────────────────
-FROM node:18-alpine AS builder
+# Build stage
+FROM node:20-alpine AS builder
+
+# Set working directory
 WORKDIR /app
 
-# Copy package manifests & install dev+prod deps
-COPY package*.json ./
-RUN npm install
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
 
-# Copy source & build the Nitro server output
+# Install pnpm if using pnpm, otherwise use npm or yarn
+RUN npm install -g pnpm && \
+    pnpm install --frozen-lockfile
+
+# Copy project files
 COPY . .
-RUN npm run build
 
-# ── Runner Stage: prod-only image ─────────────────────────────────────────────
-FROM node:18-alpine AS runner
+# Build the application
+RUN pnpm run build
+
+# Production stage
+FROM node:20-alpine AS runner
+
+# Set working directory
 WORKDIR /app
 
-# Set NODE_ENV for production optimizations
-ENV NODE_ENV=production
+# Copy necessary files from builder
+COPY --from=builder /app/.output ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
 
-# Copy only the package manifests & install production deps
-COPY package*.json ./
-RUN npm install --production
-
-# Copy the built output from builder
-COPY --from=builder /app/.output ./.output
-
-# Expose the port your Nuxt server listens on
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Launch the Nitro server
-CMD ["node", ".output/server/index.mjs"]
+# Start the application
+CMD ["node", "server/index.mjs"]
