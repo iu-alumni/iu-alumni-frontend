@@ -1,0 +1,8 @@
+echo "Running pre-commit hooks..."
+
+# Run lint-staged to lint and format only staged files
+pnpm exec lint-staged
+
+# Run build to ensure project builds successfully
+echo "Building project..."
+pnpm run build
