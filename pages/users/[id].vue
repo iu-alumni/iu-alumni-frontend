@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowTopRightOnSquareIcon } from "@heroicons/vue/24/solid";
 import DefaultButton from "~/components/common/DefaultButton.vue";
 import EntityHeader from "~/components/common/EntityHeader.vue";
 import EntityParagraph from "~/components/common/EntityParagraph.vue";
@@ -51,7 +52,9 @@ const openTelegram = (username: string) => {
                     "
                     :title="`${user.first_name} ${user.last_name}`"
                     :subtitle="
-                        user.telegram_alias ? `@${user.telegram_alias}` : ''
+                        user.telegram_alias
+                            ? `Telegram: @${user.telegram_alias}`
+                            : ''
                     "
                 >
                     <template #title>
@@ -70,20 +73,11 @@ const openTelegram = (username: string) => {
                             </p>
                             <p
                                 v-if="user.telegram_alias"
-                                class="text-sm text-blue-600 cursor-pointer hover:underline flex items-center"
+                                class="text-sm text-blue-600 cursor-pointer hover:underline flex gap-1 items-center"
                                 @click="openTelegram(user.telegram_alias)"
                             >
-                                <svg
-                                    class="w-4 h-4 mr-1"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.72-.41.96-.67.98-.57.05-.96-.35-1.48-.69-.82-.45-1.28-.74-2.07-1.19-.92-.5-.13-.77.08-1.23.08-.18 1.18-1.14 1.2-1.24.02-.06.01-.12-.02-.17-.03-.06-.08-.08-.16-.05-.09.03-1.5.92-2.79 1.7-.27.17-.51.24-.73.24-.23 0-.35-.07-.5-.23-.17-.2-.65-.75-.99-1.23-.8-1.1-1.35-1.99-1.34-1.96.03-.06.09-.08.14-.06.06.01.29.04.4.03.13-.01.29-.2.38-.35.09-.15.32-.53.44-.73.12-.2.23-.22.39-.22h.47c.17 0 .25.03.32.1.07.07.06.13.1.25.12.5.4 1.74.43 1.86.03.12.06.14.11.13.1-.02.27-.15.38-.27.1-.12.18-.23.22-.3.06-.1.12-.09.2-.05.09.03.56.92 1.77 1.71.2.13.28.2.31.32.03.12-.01.18-.1.28-.09.1-.2.22-.29.3-.19.18-.38.37-.12.7.26.33 1.06 1.14 1.55 1.55.42.35.76.53 1.03.68.14.08.25.14.34.22.15.12.1.23.07.27-.06.06-.22.19-.43.3-.35.2-.7.38-1.09.52-.31.12-.59.2-.87.2-.2 0-.4-.02-.6-.06-.5-.08-1.2-.34-1.75-.56-.72-.29-1.29-.47-1.24-.99.03-.3.36-.42.98-.64z"
-                                    ></path>
-                                </svg>
                                 @{{ user.telegram_alias }}
+                                <ArrowTopRightOnSquareIcon class="w-4 h-4" />
                             </p>
                         </div>
                     </template>
