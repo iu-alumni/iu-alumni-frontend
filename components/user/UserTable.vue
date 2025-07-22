@@ -202,22 +202,16 @@ const handleFilterChange = (
                             </p>
                             <div class="mt-2 flex flex-wrap gap-2">
                                 <button
+                                    v-if="!user.is_verified"
                                     @click="
                                         toggleVerification(
                                             user.id,
                                             user.is_verified,
                                         )
                                     "
-                                    class="px-2 py-1 text-xs rounded-md"
-                                    :class="[
-                                        user.is_verified
-                                            ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
-                                            : 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-                                    ]"
+                                    class="px-2 py-1 text-xs rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200"
                                 >
-                                    {{
-                                        user.is_verified ? "Unverify" : "Verify"
-                                    }}
+                                    Verify
                                 </button>
                                 <button
                                     @click="toggleBan(user.id)"
@@ -283,17 +277,13 @@ const handleFilterChange = (
                     </div>
                     <div class="col-span-3 flex justify-end gap-2">
                         <button
+                            v-if="!user.is_verified"
                             @click="
                                 toggleVerification(user.id, user.is_verified)
                             "
-                            :class="[
-                                'px-3 py-1 rounded-md text-sm whitespace-nowrap',
-                                user.is_verified
-                                    ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
-                                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-                            ]"
+                            class="px-3 py-1 rounded-md text-sm whitespace-nowrap bg-blue-100 text-blue-700 hover:bg-blue-200"
                         >
-                            {{ user.is_verified ? "Unverify" : "Verify" }}
+                            Verify
                         </button>
                         <button
                             @click="toggleBan(user.id)"
