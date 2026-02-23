@@ -35,24 +35,38 @@ resetErrorMessage(credentials, isError);
 </script>
 
 <template>
-    <div class="w-full h-[100vh] bg-lightgray flex items-center justify-center">
-        <div
-            class="p-[72px] pb-[114px] max-w-[504px] w-full mx-[36px] max-h-[664px] bg-white flex flex-col items-center gap-[92px] base-shadow"
-        >
-            <img :src="Logo" alt="Logo" class="max-w-[192px] self-center" />
-            <form @submit="signIn" class="flex flex-col gap-[15px] w-full">
-                <h3 class="mb-[5px]">Sign in</h3>
-                <TextInput v-model="credentials.email" placeholder="E-mail" />
-                <TextInput
-                    v-model="credentials.password"
-                    placeholder="Password"
-                    is-password
-                    :is-error="isError"
-                    :error-message="errorMessage"
-                />
-                <DefaultButton>Continue</DefaultButton>
-                <button class="button-text">Forgot password?</button>
-            </form>
-        </div>
+  <div class="w-full h-[100vh] bg-lightgray flex items-center justify-center">
+    <div
+      class="p-[72px] pb-[114px] max-w-[504px] w-full mx-[36px] max-h-[664px] bg-white flex flex-col items-center gap-[92px] base-shadow"
+    >
+      <img
+        :src="Logo"
+        alt="Logo"
+        class="max-w-[192px] self-center"
+      >
+      <form
+        class="flex flex-col gap-[15px] w-full"
+        @submit="signIn"
+      >
+        <h3 class="mb-[5px]">
+          Sign in
+        </h3>
+        <TextInput
+          v-model="credentials.email"
+          placeholder="E-mail"
+        />
+        <TextInput
+          v-model="credentials.password"
+          placeholder="Password"
+          is-password
+          :is-error="isError"
+          :error-message="errorMessage"
+        />
+        <DefaultButton>Continue</DefaultButton>
+        <button class="button-text">
+          Forgot password?
+        </button>
+      </form>
     </div>
+  </div>
 </template>

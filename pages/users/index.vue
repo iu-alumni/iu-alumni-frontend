@@ -108,86 +108,90 @@ const handleAllowedEmailsUpload = async (file: File) => {
 </script>
 
 <template>
-    <div class="grid grid-cols-3 px-[36px] gap-[80px]">
-        <div class="col-span-2">
-            <div class="flex justify-between items-center mb-6">
-                <h2>Users</h2>
-                <div class="flex items-center gap-4">
-                    <TextInput
-                        v-model="search"
-                        class="w-64"
-                        placeholder="Search by name or email..."
-                    />
-                    <UploadFile
-                        accept=".xlsx,.xls"
-                        @upload="handleAllowedEmailsUpload"
-                        class="w-full"
-                    >
-                        Upload Allowed Emails (Excel)
-                    </UploadFile>
-                    <AddAdmin />
-                </div>
-            </div>
-
-            <LoadingContent :is-loading="isLoading">
-                <UserTable
-                    :users="filteredUsers"
-                    :show-filters="true"
-                    @ban="handleBanUser"
-                    @verify="handleVerifyUser"
-                    @filter-change="handleFilterChange"
-                />
-            </LoadingContent>
+  <div class="grid grid-cols-3 px-[36px] gap-[80px]">
+    <div class="col-span-2">
+      <div class="flex justify-between items-center mb-6">
+        <h2>Users</h2>
+        <div class="flex items-center gap-4">
+          <TextInput
+            v-model="search"
+            class="w-64"
+            placeholder="Search by name or email..."
+          />
+          <UploadFile
+            accept=".xlsx,.xls"
+            class="w-full"
+            @upload="handleAllowedEmailsUpload"
+          >
+            Upload Allowed Emails (Excel)
+          </UploadFile>
+          <AddAdmin />
         </div>
+      </div>
 
-        <InstructionParagraph class="col-span-1 mt-[54px]">
-            <template #title>User Management Guide</template>
-            <template #text>
-                <div class="space-y-4">
-                    <div>
-                        <h4 class="font-medium text-gray-900">
-                            Filtering Users
-                        </h4>
-                        <p class="text-sm text-gray-600">
-                            Use the filters at the top of the user list to
-                            filter by verification status and ban status.
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-gray-900">User Actions</h4>
-                        <ul
-                            class="mt-2 space-y-2 text-sm text-gray-600 list-disc pl-5"
-                        >
-                            <li>
-                                <span class="font-medium">Verify:</span> Verify
-                                the user to permit initial access to the app
-                            </li>
-                            <li>
-                                <span class="font-medium">Ban/Unban:</span>
-                                Restrict or allow user access after initial
-                                verification
-                            </li>
-                            <li>
-                                <span class="font-medium">Edit:</span> View and
-                                edit user details
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-gray-900">
-                            Allowed Emails
-                        </h4>
-                        <p class="mt-2 text-sm text-gray-600">
-                            The Excel file upload creates a database with
-                            encoded alumni emails in the backend. When a new
-                            user signs up, their email is encoded and checked
-                            against this database. If there's a match, the user
-                            is verified as a graduate. If not, they're marked as
-                            a non-graduate.
-                        </p>
-                    </div>
-                </div>
-            </template>
-        </InstructionParagraph>
+      <LoadingContent :is-loading="isLoading">
+        <UserTable
+          :users="filteredUsers"
+          :show-filters="true"
+          @ban="handleBanUser"
+          @verify="handleVerifyUser"
+          @filter-change="handleFilterChange"
+        />
+      </LoadingContent>
     </div>
+
+    <InstructionParagraph class="col-span-1 mt-[54px]">
+      <template #title>
+        User Management Guide
+      </template>
+      <template #text>
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium text-gray-900">
+              Filtering Users
+            </h4>
+            <p class="text-sm text-gray-600">
+              Use the filters at the top of the user list to
+              filter by verification status and ban status.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">
+              User Actions
+            </h4>
+            <ul
+              class="mt-2 space-y-2 text-sm text-gray-600 list-disc pl-5"
+            >
+              <li>
+                <span class="font-medium">Verify:</span> Verify
+                the user to permit initial access to the app
+              </li>
+              <li>
+                <span class="font-medium">Ban/Unban:</span>
+                Restrict or allow user access after initial
+                verification
+              </li>
+              <li>
+                <span class="font-medium">Edit:</span> View and
+                edit user details
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">
+              Allowed Emails
+            </h4>
+            <p class="mt-2 text-sm text-gray-600">
+              The Excel file upload creates a database with
+              encoded alumni emails in the backend. When a new
+              user signs up, their email is encoded and checked
+              against this database. If there's a match, the user
+              is verified as a graduate. If not, they're marked as
+              a non-graduate.
+            </p>
+          </div>
+        </div>
+      </template>
+    </InstructionParagraph>
+  </div>
 </template>

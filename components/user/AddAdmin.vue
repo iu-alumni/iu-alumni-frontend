@@ -76,16 +76,24 @@ const openModal = () => {
 </script>
 
 <template>
-  <DefaultModal :is-opened="isModalOpen" @open="openModal">
+  <DefaultModal
+    :is-opened="isModalOpen"
+    @open="openModal"
+  >
     <template #button>
       Add Admin
     </template>
     
     <template #content>
       <div class="w-full">
-        <h3 class="text-xl font-semibold mb-4">Add New Admin</h3>
+        <h3 class="text-xl font-semibold mb-4">
+          Add New Admin
+        </h3>
         
-        <form @submit.prevent="handleSubmit" class="space-y-4">
+        <form
+          class="space-y-4"
+          @submit.prevent="handleSubmit"
+        >
           <div>
             <label class="block mb-1 text-sm font-medium">Email</label>
             <TextInput
@@ -119,8 +127,8 @@ const openModal = () => {
             <DefaultButton 
               type="active" 
               size="small"
-              @click="handleSubmit"
               :disabled="isSubmitting"
+              @click="handleSubmit"
             >
               {{ isSubmitting ? 'Adding...' : 'Add Admin' }}
             </DefaultButton>
