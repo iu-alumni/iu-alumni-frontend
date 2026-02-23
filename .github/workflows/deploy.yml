@@ -2,9 +2,9 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 env:
   REGISTRY: ghcr.io
@@ -49,7 +49,6 @@ jobs:
 
   build-image:
     needs: test-and-build
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -81,14 +80,14 @@ jobs:
 
   deploy-testing:
     needs: build-image
-    if: github.ref == 'refs/heads/develop'
-    uses: iu-alumni/iu-alumni-infra/.github/workflows/deploy-app.yml@develop
+    if: github.event_name == 'pull_request'
+    uses: iu-alumni/iu-alumni-infra/.github/workflows/deploy-app.yml@main
     with:
       repo_name: iu-alumni-frontend
       stack_name: iu_alumni_frontend
       image_var: FRONTEND_IMAGE
       image_tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
-      branch: develop
+      branch: main
       environment: testing
     secrets:
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
@@ -97,7 +96,7 @@ jobs:
 
   deploy-production:
     needs: build-image
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: iu-alumni/iu-alumni-infra/.github/workflows/deploy-app.yml@main
     with:
       repo_name: iu-alumni-frontend
