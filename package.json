@@ -29,6 +29,16 @@
     "vue-router": "latest"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "pnpm": {
+    "overrides": {
+      "@unhead/vue": "1.11.18",
+      "@unhead/dom": "1.11.18",
+      "@unhead/schema": "1.11.18",
+      "@unhead/shared": "1.11.18",
+      "@unhead/ssr": "1.11.18",
+      "unhead": "1.11.18"
+    }
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.23.0",
