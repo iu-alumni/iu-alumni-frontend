@@ -26,15 +26,19 @@ const isPasswordShown = ref(false)
         :class="(isPassword ? 'pr-[40px' : '')"
         :placeholder="placeholder"
         @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      />
+      >
       <img
-        v-if="isPassword" :src="isPasswordShown ? Eye : EyeBlack"
+        v-if="isPassword"
+        :src="isPasswordShown ? Eye : EyeBlack"
         class="absolute -translate-y-1/2 top-1/2 right-[20px] cursor-pointer"
         @click="isPasswordShown = !isPasswordShown"
-      />
+      >
     </div>
     
-    <label v-if="isError" class="text-[12px] text-lightpink">
+    <label
+      v-if="isError"
+      class="text-[12px] text-lightpink"
+    >
       {{ errorMessage }}
     </label>
   </div>

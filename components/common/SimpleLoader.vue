@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center mt-[16px]">
-    <div class="loader"></div>
+    <div class="loader" />
   </div>
 </template>
 

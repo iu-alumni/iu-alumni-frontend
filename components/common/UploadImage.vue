@@ -18,10 +18,21 @@ const onChange = (e: any) => {
 </script>
 
 <template>
-  <input ref="inputRef" type='file' hidden @change="onChange" />
-  <button class="bg-bluegray bg-opacity-50 flex items-center justify-center w-[144px] h-[144px] rounded-[4px]" @click="triggerUpload">
+  <input
+    ref="inputRef"
+    type="file"
+    hidden
+    @change="onChange"
+  >
+  <button
+    class="bg-bluegray bg-opacity-50 flex items-center justify-center w-[144px] h-[144px] rounded-[4px]"
+    @click="triggerUpload"
+  >
     <span v-if="!imageUri">Upload image</span>
-    <img v-else :src="imageUri" class="max-w-[144px] max-h-[144px]" />
+    <img
+      v-else
+      :src="imageUri"
+      class="max-w-[144px] max-h-[144px]"
+    >
   </button>
-  
 </template>

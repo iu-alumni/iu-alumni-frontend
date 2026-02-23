@@ -24,7 +24,10 @@ defineProps<{
         class="flex flex-col gap-[14px] items-center"
       >
         <div class="w-[96px] h-[96px] flex items-center justify-center">
-          <img :src="sticker.img" class="max-w-[96px] max-h-[96px]" />
+          <img
+            :src="sticker.img"
+            class="max-w-[96px] max-h-[96px]"
+          >
         </div>
         <span class="text-bluegray text-[18px]">
           {{ sticker.label }}

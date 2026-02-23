@@ -29,8 +29,11 @@ const handleFileChange = (event: Event) => {
     accept=".xlsx,.xls"
     :multiple="false"
     @change="handleFileChange"
-  />
-  <DefaultButton @click="triggerUpload" size="small">
+  >
+  <DefaultButton
+    size="small"
+    @click="triggerUpload"
+  >
     <slot />
   </DefaultButton>
 </template>

@@ -40,7 +40,10 @@ resetErrorMessage(name, isError)
 </script>
 
 <template>
-  <DefaultModal :is-opened="isOpened" @open="isOpened = true">
+  <DefaultModal
+    :is-opened="isOpened"
+    @open="isOpened = true"
+  >
     <template #button>
       Award
     </template>
@@ -53,13 +56,26 @@ resetErrorMessage(name, isError)
 
         <UploadImage @upload="uri => imageUri = uri" />
 
-        <TextInput v-model="name" placeholder="Name" class="my-[16px]" :is-error="isError" :error-message="errorMessage" />
+        <TextInput
+          v-model="name"
+          placeholder="Name"
+          class="my-[16px]"
+          :is-error="isError"
+          :error-message="errorMessage"
+        />
 
         <div class="flex justify-between gap-[24px]">
-          <DefaultButton size="small" @click="award">
+          <DefaultButton
+            size="small"
+            @click="award"
+          >
             Award
           </DefaultButton>
-          <DefaultButton size="small" type="inactive" @click="isOpened = false">
+          <DefaultButton
+            size="small"
+            type="inactive"
+            @click="isOpened = false"
+          >
             Close
           </DefaultButton>
         </div>

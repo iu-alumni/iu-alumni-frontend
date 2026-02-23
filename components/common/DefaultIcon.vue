@@ -5,5 +5,9 @@ defineProps<{
 </script>
 
 <template>
-  <img alt="" class="h-[44px] w-[44px] rounded-full bg-basegray" :class="{'icon-shadow': withShadow}" />
+  <img
+    alt=""
+    class="h-[44px] w-[44px] rounded-full bg-basegray"
+    :class="{'icon-shadow': withShadow}"
+  >
 </template>

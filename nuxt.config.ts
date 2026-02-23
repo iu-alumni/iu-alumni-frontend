@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    telemetry: false,
     modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@pinia/nuxt"],
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },

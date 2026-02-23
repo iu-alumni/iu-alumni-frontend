@@ -62,7 +62,10 @@ const reject = async (id: string) => {
 
 <template>
   <LoadingContent :is-loading="isLoading">
-    <div v-if="event" class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]">
+    <div
+      v-if="event"
+      class="px-[36px] grid grid-cols-3 gap-x-[36px] gap-y-[54px]"
+    >
       <div class="col-span-2">
         <EntityHeader 
           :logo="event.cover ? `data:image/jpeg;base64,${event.cover}` : ''" 
@@ -74,16 +77,22 @@ const reject = async (id: string) => {
             <SmallIcon 
               v-if="owner" 
               :src="Edit" 
-              @click="editEvent" 
-              class="ml-2"
+              class="ml-2" 
+              @click="editEvent"
             />
           </template>
 
           <template #buttons>
-            <div v-if="event.approved" class="flex items-center gap-2">
+            <div
+              v-if="event.approved"
+              class="flex items-center gap-2"
+            >
               <span class="text-sm font-medium text-green-600">Event Approved</span>
             </div>
-            <div v-else class="flex items-center gap-2">
+            <div
+              v-else
+              class="flex items-center gap-2"
+            >
               <span class="text-sm font-medium text-yellow-600">Pending Approval</span>
             </div>
           </template>
@@ -95,22 +104,36 @@ const reject = async (id: string) => {
           <div class="bg-white p-6 rounded-lg shadow-sm">
             <div class="grid grid-cols-2 gap-6 mb-6">
               <div>
-                <h4 class="text-sm font-medium text-gray-500 mb-1">Date & Time</h4>
-                <p class="text-gray-900">{{ formatDate(event.datetime) }}</p>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                  Date & Time
+                </h4>
+                <p class="text-gray-900">
+                  {{ formatDate(event.datetime) }}
+                </p>
               </div>
               <div>
-                <h4 class="text-sm font-medium text-gray-500 mb-1">Location</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                  Location
+                </h4>
                 <p class="text-gray-900">
                   {{ event.is_online ? 'Online Event' : event.location }}
                 </p>
               </div>
               <div v-if="event.cost > 0">
-                <h4 class="text-sm font-medium text-gray-500 mb-1">Cost</h4>
-                <p class="text-gray-900">${{ event.cost.toFixed(2) }}</p>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                  Cost
+                </h4>
+                <p class="text-gray-900">
+                  ${{ event.cost.toFixed(2) }}
+                </p>
               </div>
               <div v-if="event.participants_ids?.length > 0">
-                <h4 class="text-sm font-medium text-gray-500 mb-1">Participants</h4>
-                <p class="text-gray-900">{{ event.participants_ids.length }} registered</p>
+                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                  Participants
+                </h4>
+                <p class="text-gray-900">
+                  {{ event.participants_ids.length }} registered
+                </p>
               </div>
             </div>
 
@@ -131,29 +154,53 @@ const reject = async (id: string) => {
               Participants ({{ participants.length }})
             </template>
             <template #text>
-              <EventParticipants v-if="participants.length > 0" :users="participants" />
-              <p v-else class="text-gray-500">No participants yet.</p>
+              <EventParticipants
+                v-if="participants.length > 0"
+                :users="participants"
+              />
+              <p
+                v-else
+                class="text-gray-500"
+              >
+                No participants yet.
+              </p>
             </template>
           </EntityParagraph>
         </div>
 
         <div class="space-y-6">
           <div class="bg-white p-6 rounded-lg shadow-sm">
-            <h3 class="font-medium text-lg mb-4">Event Organizer</h3>
-            <div v-if="owner" class="flex items-center gap-4">
+            <h3 class="font-medium text-lg mb-4">
+              Event Organizer
+            </h3>
+            <div
+              v-if="owner"
+              class="flex items-center gap-4"
+            >
               <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
                 {{ owner.first_name[0] }}{{ owner.last_name[0] }}
               </div>
               <div>
-                <p class="font-medium">{{ owner.first_name }} {{ owner.last_name }}</p>
-                <p class="text-sm text-gray-500">Class of {{ owner.graduation_year }}</p>
+                <p class="font-medium">
+                  {{ owner.first_name }} {{ owner.last_name }}
+                </p>
+                <p class="text-sm text-gray-500">
+                  Class of {{ owner.graduation_year }}
+                </p>
               </div>
             </div>
-            <p v-else class="text-gray-500">Organizer information not available</p>
+            <p
+              v-else
+              class="text-gray-500"
+            >
+              Organizer information not available
+            </p>
           </div>
 
           <div class="bg-white p-6 rounded-lg shadow-sm">
-            <h3 class="font-medium text-lg mb-4">Event Actions</h3>
+            <h3 class="font-medium text-lg mb-4">
+              Event Actions
+            </h3>
             <div class="space-y-3">
               <DefaultButton 
                 v-if="event.approved"

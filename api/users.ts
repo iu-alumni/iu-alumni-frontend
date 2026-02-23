@@ -26,10 +26,6 @@ function unbanUser (userId: string): Promise<User> {
   return axiosInstance.post(`admin/unban/${userId}`).then(req => req.data)
 }
 
-interface VerifyUserParams {
-  email: string;
-}
-
 function verifyUser (email: string): Promise<User> {
   return axiosInstance.post('admin/verify', { email }).then(req => req.data)
 }

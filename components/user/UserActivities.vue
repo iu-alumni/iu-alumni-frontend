@@ -23,7 +23,10 @@ const decrementActivityScore = (id: string) => {
       :key="activity.id"
       class="flex gap-[12px]"
     >
-      <div class="icon-shadow h-[24px] w-[24px] rounded-full" :style="{backgroundColor: activity.color || '#D9D9D9'}" />
+      <div
+        class="icon-shadow h-[24px] w-[24px] rounded-full"
+        :style="{backgroundColor: activity.color || '#D9D9D9'}"
+      />
       <span class="paragraph">{{ activity.name }}</span>
       <span class="button-text">{{ activity.score }}</span>
       <div class="flex flex-col items-center">
@@ -32,13 +35,13 @@ const decrementActivityScore = (id: string) => {
           alt=""
           class="h-[16px] w-[16px] cursor-pointer hover:opacity-95"
           @click="incrementActivityScore(activity.id)"
-        />
+        >
         <img
           :src="Minus"
           alt=""
           class="h-[16px] w-[16px] cursor-pointer hover:opacity-95"
           @click="decrementActivityScore(activity.id)"
-        />
+        >
       </div>
     </div>
   </div>

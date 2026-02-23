@@ -28,16 +28,30 @@ const getStatusBadge = (event: Event) => {
   <div class="overflow-hidden rounded-lg border border-gray-200">
     <!-- Table Header -->
     <div class="grid grid-cols-12 bg-gray-50 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-      <div class="col-span-4">Event</div>
-      <div class="col-span-2">Location</div>
-      <div class="col-span-3">Date & Time</div>
-      <div class="col-span-2">Status</div>
-      <div class="col-span-1 text-right">Actions</div>
+      <div class="col-span-4">
+        Event
+      </div>
+      <div class="col-span-2">
+        Location
+      </div>
+      <div class="col-span-3">
+        Date & Time
+      </div>
+      <div class="col-span-2">
+        Status
+      </div>
+      <div class="col-span-1 text-right">
+        Actions
+      </div>
     </div>
 
     <!-- Table Rows -->
     <div class="divide-y divide-gray-200">
-      <div v-for="event in events" :key="event.id" class="bg-white">
+      <div
+        v-for="event in events"
+        :key="event.id"
+        class="bg-white"
+      >
         <div class="grid grid-cols-12 items-center px-4 py-4 hover:bg-gray-50">
           <!-- Event Info -->
           <div class="col-span-4 flex items-center space-x-3">
@@ -45,7 +59,7 @@ const getStatusBadge = (event: Event) => {
               :src="`data:image/jpeg;base64,${event.cover}`" 
               class="h-10 w-10 flex-shrink-0 rounded-full"
               :alt="event.title"
-            />
+            >
             <span class="text-sm font-medium text-gray-900">
               {{ event.title }}
             </span>
@@ -109,8 +123,13 @@ const getStatusBadge = (event: Event) => {
     </div>
     
     <!-- Empty State -->
-    <div v-if="events.length === 0" class="px-4 py-12 text-center">
-      <p class="text-sm text-gray-500">No events found</p>
+    <div
+      v-if="events.length === 0"
+      class="px-4 py-12 text-center"
+    >
+      <p class="text-sm text-gray-500">
+        No events found
+      </p>
     </div>
   </div>
 </template>
