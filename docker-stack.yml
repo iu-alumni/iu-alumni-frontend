@@ -1,0 +1,41 @@
+version: "3.8"
+
+# ─────────────────────────────────────────────────────────────
+# IU Alumni Frontend - Production Docker Swarm stack
+#
+# Deploy:
+#   docker stack deploy -c docker-stack.yml iu_alumni_frontend --with-registry-auth
+#
+# Requires the shared overlay network to exist:
+#   docker network create --driver overlay --attachable iu_alumni_network
+# ─────────────────────────────────────────────────────────────
+
+services:
+  frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/iu-alumni/iu-alumni-frontend:latest}
+    environment:
+      NUXT_PUBLIC_API_BASE: https://api.${DOMAIN}
+    networks:
+      iu_alumni_network:
+        aliases:
+          - frontend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+
+networks:
+  iu_alumni_network:
+    external: true
