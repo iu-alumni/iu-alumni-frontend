@@ -1,6 +1,20 @@
 # IU Alumni — Frontend
 
-Nuxt 3 / Vue 3 / TypeScript frontend for the IU Alumni Portal.
+Admin portal for the IU Alumni platform, built with Nuxt 3 and Vue 3.
+
+## Tech Stack
+
+- **Nuxt 3** · **Vue 3** · **TypeScript**
+- **Pinia** (state management) · **Axios** (HTTP client)
+- **Shadcn-Vue** / **Reka UI** · **Tailwind CSS**
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Dashboard |
+| `/events` | Event management |
+| `/users` | User management |
 
 ## Local Development
 
@@ -14,4 +28,4 @@ Set `NUXT_PUBLIC_API_BASE=http://localhost:8080` in `.env` to point at a local b
 ## Deployment
 
 Automatic on push to `develop` (testing) or `main` (production).  
-See [iu-alumni-infra](../iu-alumni-infra/README.md) for full deployment guide and secrets reference.
+See [iu-alumni-infra](https://github.com/iu-alumni/iu-alumni-infra) for the full deployment guide and secrets reference.
