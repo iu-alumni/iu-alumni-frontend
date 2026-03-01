@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://www.xdkomel.ru/",
+    baseURL: useRuntimeConfig().public.apiBase,
     timeout: 30000,
 });
 
