@@ -5,18 +5,14 @@ import LoadingContent from "~/components/common/LoadingContent.vue";
 import TextInput from "~/components/common/TextInput.vue";
 import EventTable from "~/components/event/EventTable.vue";
 import { useEventsStore } from "~/store/events";
-import { ref, computed, onMounted } from "vue";
-import type { Event } from "~/types";
+import { ref, computed, onMounted, watch } from "vue";
 
 const eventsStore = useEventsStore();
-
-const events = ref([] as Event[]);
 
 const isLoading = ref(true);
 
 onMounted(() => {
     eventsStore.updateEvents().then(() => {
-        events.value = eventsStore.events;
         isLoading.value = false;
     });
 
@@ -25,11 +21,13 @@ onMounted(() => {
 
 const search = ref("");
 
-const searchedEvents = computed(() =>
-    events.value.filter((event) =>
-        event.title.toLowerCase().includes(search.value.toLowerCase()),
-    ),
-);
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+watch(search, (value) => {
+    if (searchTimeout) clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        eventsStore.updateEvents({ search: value || undefined });
+    }, 300);
+});
 
 const changeStatus = async (id: string, status: "approved" | "rejected") => {
     const event = eventsStore.getEventById(id);
@@ -50,6 +48,10 @@ const isVerificationEnabled = computed(
 
 const toggleVerification = async () => {
     await eventsStore.toggleAutoApprove();
+};
+
+const loadMore = () => {
+    eventsStore.loadMoreEvents({ search: search.value || undefined });
 };
 </script>
 
@@ -86,10 +88,22 @@ const toggleVerification = async () => {
       <LoadingContent :is-loading="isLoading">
         <EventTable
           class="mt-[36px]"
-          :events="searchedEvents"
+          :events="eventsStore.events"
           @approve="(id) => changeStatus(id, 'approved')"
           @reject="(id) => changeStatus(id, 'rejected')"
         />
+        <div
+          v-if="eventsStore.nextCursor"
+          class="mt-4 flex justify-center"
+        >
+          <DefaultButton
+            size="small"
+            type="inactive"
+            @click="loadMore"
+          >
+            Load more
+          </DefaultButton>
+        </div>
       </LoadingContent>
     </div>
 

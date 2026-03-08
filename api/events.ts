@@ -1,8 +1,14 @@
-import type { Event, EventApprovalSettings, EventParticipant } from "~/types";
+import type { Event, EventApprovalSettings, EventListItem, EventParticipant, Paginated } from "~/types";
 import axiosInstance from ".";
 
-function listEvents (): Promise<Event[]> {
-  return axiosInstance.get('admin/events').then(req => req.data)
+interface ListEventsParams {
+  search?: string;
+  cursor?: string;
+  limit?: number;
+}
+
+function listEvents (params?: ListEventsParams): Promise<Paginated<EventListItem>> {
+  return axiosInstance.get('admin/events', { params }).then(req => req.data)
 }
 
 function createEvent (event: Event): Promise<Event> {

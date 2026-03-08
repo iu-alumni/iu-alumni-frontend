@@ -6,12 +6,12 @@ import {
     UserCircleIcon,
 } from "@heroicons/vue/24/solid";
 import { UserCircleIcon as OutlineUserCircleIcon } from "@heroicons/vue/24/outline";
-import type { User } from "~/types";
+import type { UserListItem } from "~/types";
 import { useUsersStore } from "~/store/users";
-import { computed, reactive } from "vue";
+import { reactive } from "vue";
 
 interface Props {
-    users: User[];
+    users: UserListItem[];
     showFilters?: boolean;
 }
 
@@ -21,29 +21,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const usersStore = useUsersStore();
 
-const emit = defineEmits(["ban", "verify"]);
+const emit = defineEmits(["ban", "verify", "filter-change"]);
 
 const filters = reactive({
     banned: null as boolean | null,
     verified: null as boolean | null,
-});
-
-const filteredUsers = computed(() => {
-    return props.users.filter((user) => {
-        // Filter by ban status
-        const bannedMatch =
-            filters.banned === null ||
-            (filters.banned
-                ? usersStore.isUserBanned(user.id)
-                : !usersStore.isUserBanned(user.id));
-
-        // Filter by verification status
-        const verifiedMatch =
-            filters.verified === null ||
-            (filters.verified ? user.is_verified : !user.is_verified);
-
-        return bannedMatch && verifiedMatch;
-    });
 });
 
 const edit = (id: string) => {
@@ -73,6 +55,7 @@ const handleFilterChange = (
     value: string | null,
 ) => {
     filters[type] = value === null ? null : value === "true";
+    emit("filter-change", { ...filters });
 };
 </script>
 
@@ -167,7 +150,7 @@ const handleFilterChange = (
 
       <!-- Rows -->
       <template
-        v-for="user in filteredUsers"
+        v-for="user in props.users"
         :key="user.id"
       >
         <!-- Mobile Card -->
@@ -338,7 +321,7 @@ const handleFilterChange = (
 
       <!-- Empty State -->
       <div
-        v-if="filteredUsers.length === 0"
+        v-if="props.users.length === 0"
         class="p-8 text-center text-gray-500"
       >
         No users found matching the current filters.
