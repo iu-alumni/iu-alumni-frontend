@@ -1,55 +1,40 @@
 ---
-name: Bug report
-about: Report a bug or unexpected behavior in the project.
-title: ''
-labels: ''
+name: Bug Report
+about: Report a bug or unexpected behaviour
+title: "[Bug] "
+labels: bug
 assignees: ''
-
 ---
 
-## **Bug Description**
-A clear and concise description of the bug.
+## Description
 
-**Example:**
-The login button does not respond when clicked, preventing users from accessing their accounts.
+<!-- A clear and concise description of the bug. -->
 
----
+## Steps to Reproduce
 
-## **Environment**
-- **Environment:** [e.g., Development, Production, Staging]
-- **Browser:** [e.g., Chrome, Firefox, Safari]
-- **Version:** [e.g., 1.0.0]
+1. 
+2. 
+3. 
 
----
+## Expected Behaviour
 
-## **Steps to Reproduce**
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+<!-- What you expected to happen. -->
 
----
+## Actual Behaviour
 
-## **Expected Behavior**
-A clear and concise description of what you expected to happen.
+<!-- What actually happened. -->
 
-**Example:**
-The login button should redirect users to their dashboard after successful authentication.
+## Screenshots / Logs
 
----
+<!-- If applicable, add screenshots or paste relevant log output. -->
 
-## **Actual Behavior**
-A clear and concise description of what actually happened.
+## Environment
 
-**Example:**
-The login button does nothing when clicked.
+- **Browser:** <!-- e.g. Chrome 123, Firefox 124 -->
+- **OS:** <!-- e.g. macOS 14, Windows 11 -->
+- **Environment:** <!-- DEV / Staging / Production -->
+- **Page / route:** <!-- e.g. /users/123 -->
 
----
+## Additional Context
 
-## **Screenshots**
-If applicable, add screenshots to help explain the problem.
-
----
-
-## **Additional Context**
-Add any other context about the problem here.
+<!-- Any other information that might help. -->
