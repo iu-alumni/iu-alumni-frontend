@@ -1,12 +1,15 @@
-import type { User, UserProfile } from "~/types";
+import type { User, UserListItem, UserProfile } from "~/types";
 import axiosInstance from ".";
 
 interface ListUsersParams {
+  search?: string;
   banned?: boolean | null;
   verified?: boolean | null;
+  skip?: number;
+  limit?: number;
 }
 
-function listUsers(params?: ListUsersParams): Promise<User[]> {
+function listUsers(params?: ListUsersParams): Promise<UserListItem[]> {
   return axiosInstance.get('/admin/users', { params }).then(req => req.data)
 }
 

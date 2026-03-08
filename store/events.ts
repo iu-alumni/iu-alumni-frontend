@@ -1,28 +1,28 @@
 import { defineStore } from "pinia";
 import eventsInstance from "~/api/events";
-import type { Event, EventApprovalSettings } from "~/types";
+import type { Event, EventApprovalSettings, EventListItem } from "~/types";
 
 export const useEventsStore = defineStore('events', {
   state: () => ({
-    events: [] as Event[],
+    events: [] as EventListItem[],
     approvalSettings: null as EventApprovalSettings | null
   }),
 
   getters: {
       getEventById: (state) => {
-        return (eventId: string) => state.events.find((event) => event.id === eventId) as Event
+        return (eventId: string) => state.events.find((event) => event.id === eventId) as EventListItem
       }
   },
 
   actions: {
-    async updateEvents() {
-      this.events = await eventsInstance.listEvents()
+    async updateEvents(params?: { search?: string; skip?: number; limit?: number }) {
+      this.events = await eventsInstance.listEvents(params)
     },
 
-    updateEvent(eventId: string, updatedEvent: Event) {
+    updateEvent(eventId: string, updatedEvent: Partial<Event>) {
       const index = this.events.findIndex(event => event.id === eventId)
-      this.events[index] = {...this.events[index], ...updatedEvent}
-      return eventsInstance.updateEvent(eventId, updatedEvent)
+      if (index !== -1) this.events[index] = {...this.events[index], ...updatedEvent}
+      return eventsInstance.updateEvent(eventId, updatedEvent as Event)
     },
 
     deleteEvent(eventId: string) {

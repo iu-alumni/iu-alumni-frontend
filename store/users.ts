@@ -1,16 +1,16 @@
 import { defineStore } from "pinia";
 import usersInstance from '@/api/users'
-import type { User } from "~/types";
+import type { UserListItem } from "~/types";
 
 interface UsersState {
-  users: User[];
+  users: UserListItem[];
   bannedUsersIds: Set<string>;
   verifiedUsersIds: Set<string>;
 }
 
 export const useUsersStore = defineStore('users', {
   state: (): UsersState => ({
-    users: [] as User[],
+    users: [] as UserListItem[],
     bannedUsersIds: new Set() as Set<string>,
     verifiedUsersIds: new Set() as Set<string>,
   }),
@@ -25,7 +25,7 @@ export const useUsersStore = defineStore('users', {
   },
 
   actions: {
-    async updateUsers(params?: { banned?: boolean | null, verified?: boolean | null }) {
+    async updateUsers(params?: { search?: string; banned?: boolean | null; verified?: boolean | null }) {
       try {
         const [allUsers, bannedUsers] = await Promise.all([
           usersInstance.listUsers(params),

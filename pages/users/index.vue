@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import DefaultButton from "~/components/common/DefaultButton.vue";
 import InstructionParagraph from "~/components/common/InstructionParagraph.vue";
 import LoadingContent from "~/components/common/LoadingContent.vue";
@@ -7,29 +7,27 @@ import TextInput from "~/components/common/TextInput.vue";
 import UploadFile from "~/components/common/UploadFile.vue";
 import UserTable from "~/components/user/UserTable.vue";
 import { useUsersStore } from "~/store/users";
-import type { User } from "~/types";
 import { useToast } from "~/components/ui/toast/use-toast";
 import usersApi from "~/api/users";
 import AddAdmin from "~/components/user/AddAdmin.vue";
 
 const search = ref("");
 const usersStore = useUsersStore();
-const users = ref<User[]>([]);
 const isLoading = ref(true);
 const { toast } = useToast();
 
-// Filters
 const activeFilters = ref({
     banned: null as boolean | null,
     verified: null as boolean | null,
 });
 
-// Load users with optional filters
 const loadUsers = async () => {
     try {
         isLoading.value = true;
-        await usersStore.updateUsers(activeFilters.value);
-        users.value = [...usersStore.users]; // Create a new array to trigger reactivity
+        await usersStore.updateUsers({
+            search: search.value || undefined,
+            ...activeFilters.value,
+        });
     } catch (error) {
         console.error("Failed to load users:", error);
         toast({
@@ -42,26 +40,14 @@ const loadUsers = async () => {
     }
 };
 
-// Initial load
 onMounted(loadUsers);
 
-// Apply search and filters
-const filteredUsers = computed(() => {
-    return users.value.filter((user) => {
-        const matchesSearch =
-            search.value === "" ||
-            (user.name?.toLowerCase() || "").includes(
-                search.value.toLowerCase(),
-            ) ||
-            (user.email?.toLowerCase() || "").includes(
-                search.value.toLowerCase(),
-            );
-
-        return matchesSearch;
-    });
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+watch(search, () => {
+    if (searchTimeout) clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(loadUsers, 300);
 });
 
-// Handle filter changes
 const handleFilterChange = (filters: {
     banned: boolean | null;
     verified: boolean | null;
@@ -70,10 +56,7 @@ const handleFilterChange = (filters: {
     loadUsers();
 };
 
-// Handle user actions
 const handleBanUser = (userId: string) => {
-    // The store will handle the API call and update the state
-    // The UserTable component will emit an event that we can use for any side effects
     console.log("User ban status toggled:", userId);
 };
 
@@ -84,8 +67,6 @@ const handleVerifyUser = ({
     userId: string;
     isVerified: boolean;
 }) => {
-    // The store will handle the API call and update the state
-    // The UserTable component will emit an event that we can use for any side effects
     console.log("User verification status toggled:", { userId, isVerified });
 };
 
@@ -131,7 +112,7 @@ const handleAllowedEmailsUpload = async (file: File) => {
 
       <LoadingContent :is-loading="isLoading">
         <UserTable
-          :users="filteredUsers"
+          :users="usersStore.users"
           :show-filters="true"
           @ban="handleBanUser"
           @verify="handleVerifyUser"
