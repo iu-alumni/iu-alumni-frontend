@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:8080/",
     timeout: 30000,
 });
 
