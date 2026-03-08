@@ -5,6 +5,7 @@ import type { Event, EventApprovalSettings, EventListItem } from "~/types";
 export const useEventsStore = defineStore('events', {
   state: () => ({
     events: [] as EventListItem[],
+    nextCursor: null as string | null,
     approvalSettings: null as EventApprovalSettings | null
   }),
 
@@ -15,8 +16,17 @@ export const useEventsStore = defineStore('events', {
   },
 
   actions: {
-    async updateEvents(params?: { search?: string; skip?: number; limit?: number }) {
-      this.events = await eventsInstance.listEvents(params)
+    async updateEvents(params?: { search?: string; cursor?: string; limit?: number }) {
+      const page = await eventsInstance.listEvents(params)
+      this.events = page.items
+      this.nextCursor = page.next_cursor
+    },
+
+    async loadMoreEvents(params?: { search?: string; limit?: number }) {
+      if (!this.nextCursor) return
+      const page = await eventsInstance.listEvents({ ...params, cursor: this.nextCursor })
+      this.events = [...this.events, ...page.items]
+      this.nextCursor = page.next_cursor
     },
 
     updateEvent(eventId: string, updatedEvent: Partial<Event>) {

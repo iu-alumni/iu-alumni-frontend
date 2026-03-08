@@ -107,3 +107,9 @@ export type UserProfile = {
 export type EventApprovalSettings = {
     auto_approve: boolean;
 };
+
+/** Generic paginated response returned by all list endpoints. */
+export type Paginated<T> = {
+    items: T[];
+    next_cursor: string | null;
+};

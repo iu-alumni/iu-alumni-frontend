@@ -86,6 +86,13 @@ const handleAllowedEmailsUpload = async (file: File) => {
         isLoading.value = false;
     }
 };
+
+const loadMoreUsers = () => {
+    usersStore.loadMoreUsers({
+        search: search.value || undefined,
+        ...activeFilters.value,
+    });
+};
 </script>
 
 <template>
@@ -118,6 +125,18 @@ const handleAllowedEmailsUpload = async (file: File) => {
           @verify="handleVerifyUser"
           @filter-change="handleFilterChange"
         />
+        <div
+          v-if="usersStore.nextCursor"
+          class="mt-4 flex justify-center"
+        >
+          <DefaultButton
+            size="small"
+            type="inactive"
+            @click="loadMoreUsers"
+          >
+            Load more
+          </DefaultButton>
+        </div>
       </LoadingContent>
     </div>
 

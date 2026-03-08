@@ -1,13 +1,13 @@
-import type { Event, EventApprovalSettings, EventListItem, EventParticipant } from "~/types";
+import type { Event, EventApprovalSettings, EventListItem, EventParticipant, Paginated } from "~/types";
 import axiosInstance from ".";
 
 interface ListEventsParams {
   search?: string;
-  skip?: number;
+  cursor?: string;
   limit?: number;
 }
 
-function listEvents (params?: ListEventsParams): Promise<EventListItem[]> {
+function listEvents (params?: ListEventsParams): Promise<Paginated<EventListItem>> {
   return axiosInstance.get('admin/events', { params }).then(req => req.data)
 }
 

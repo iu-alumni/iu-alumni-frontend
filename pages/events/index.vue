@@ -49,6 +49,10 @@ const isVerificationEnabled = computed(
 const toggleVerification = async () => {
     await eventsStore.toggleAutoApprove();
 };
+
+const loadMore = () => {
+    eventsStore.loadMoreEvents({ search: search.value || undefined });
+};
 </script>
 
 <template>
@@ -88,6 +92,18 @@ const toggleVerification = async () => {
           @approve="(id) => changeStatus(id, 'approved')"
           @reject="(id) => changeStatus(id, 'rejected')"
         />
+        <div
+          v-if="eventsStore.nextCursor"
+          class="mt-4 flex justify-center"
+        >
+          <DefaultButton
+            size="small"
+            type="inactive"
+            @click="loadMore"
+          >
+            Load more
+          </DefaultButton>
+        </div>
       </LoadingContent>
     </div>
 
