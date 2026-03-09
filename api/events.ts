@@ -11,10 +11,6 @@ function listEvents (params?: ListEventsParams): Promise<Paginated<EventListItem
   return axiosInstance.get('admin/events', { params }).then(req => req.data)
 }
 
-function getEventCover (eventId: string): Promise<{ cover: string | null }> {
-  return axiosInstance.get(`events/${eventId}/cover`).then(req => req.data)
-}
-
 function createEvent (event: Event): Promise<Event> {
   return axiosInstance.post('events/', event).then(req => req.data)
 }
@@ -49,7 +45,6 @@ function toggleAutoApprove(): Promise<EventApprovalSettings> {
 
 export default {
   listEvents,
-  getEventCover,
   createEvent,
   updateEvent,
   deleteEvent,
