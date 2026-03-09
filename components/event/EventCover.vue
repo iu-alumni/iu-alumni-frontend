@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue'
 import eventsApi from '~/api/events'
 
+// Module-level cache — survives component unmount/remount (navigation away & back)
+const cache = new Map<string, string | null>()
+
 const props = defineProps<{
   eventId: string
   title?: string
@@ -11,11 +14,16 @@ const props = defineProps<{
 const cover = ref<string | null>(null)
 
 onMounted(async () => {
+  if (cache.has(props.eventId)) {
+    cover.value = cache.get(props.eventId) ?? null
+    return
+  }
   try {
     const data = await eventsApi.getEventCover(props.eventId)
+    cache.set(props.eventId, data.cover)
     cover.value = data.cover
   } catch {
-    // fallback to placeholder
+    cache.set(props.eventId, null)
   }
 })
 </script>

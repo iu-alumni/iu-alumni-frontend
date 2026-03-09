@@ -3,6 +3,9 @@ import { ref, onMounted } from 'vue'
 import { UserCircleIcon } from '@heroicons/vue/24/solid'
 import usersApi from '~/api/users'
 
+// Module-level cache — survives component unmount/remount (navigation away & back)
+const cache = new Map<string, string | null>()
+
 const props = defineProps<{
   userId: string
   size?: string
@@ -11,11 +14,16 @@ const props = defineProps<{
 const avatar = ref<string | null>(null)
 
 onMounted(async () => {
+  if (cache.has(props.userId)) {
+    avatar.value = cache.get(props.userId) ?? null
+    return
+  }
   try {
     const data = await usersApi.getUserAvatar(props.userId)
+    cache.set(props.userId, data.avatar)
     avatar.value = data.avatar
   } catch {
-    // fallback to icon
+    cache.set(props.userId, null)
   }
 })
 </script>
