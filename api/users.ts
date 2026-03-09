@@ -13,6 +13,10 @@ function listUsers(params?: ListUsersParams): Promise<Paginated<UserListItem>> {
   return axiosInstance.get('/admin/users', { params }).then(req => req.data)
 }
 
+function getUserAvatar (userId: string): Promise<{ avatar: string | null }> {
+  return axiosInstance.get(`profile/${userId}/avatar`).then(req => req.data)
+}
+
 function getUserById (userId: string): Promise<UserProfile> {
   return axiosInstance.get(`profile/${userId}`).then(req => req.data)
 }
@@ -52,6 +56,7 @@ function uploadAllowedEmailsXls (file: File): Promise<{success: true, message: s
 
 export default {
   listUsers,
+  getUserAvatar,
   getUserById,
   listBannedUsers,
   banUser,
