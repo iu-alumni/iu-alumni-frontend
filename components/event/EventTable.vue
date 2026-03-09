@@ -2,13 +2,14 @@
 import Approve from '@/assets/icons/misc/button__approve.svg'
 import Reject from '@/assets/icons/misc/button__reject.svg'
 import Edit from '@/assets/icons/misc/button__edit.svg'
-import type { Event } from '~/types';
+import type { EventListItem } from '~/types';
 import SmallIcon from '../common/SmallIcon.vue';
 import DefaultIcon from '../common/DefaultIcon.vue';
 import DefaultSeparator from '../common/DefaultSeparator.vue';
+import EventCover from '../event/EventCover.vue';
 
 defineProps<{
-  events: Event[]
+  events: EventListItem[]
 }>()
 
 const emit = defineEmits(['approve', 'reject'])
@@ -17,7 +18,7 @@ const edit = (id: string) => {
   navigateTo(`/events/${id}`)
 }
 
-const getStatusBadge = (event: Event) => {
+const getStatusBadge = (event: EventListItem) => {
   if (event.approved === true) return { text: 'Approved', class: 'bg-green-100 text-green-800' }
   if (event.approved === false) return { text: 'Rejected', class: 'bg-red-100 text-red-800' }
   return { text: 'Pending', class: 'bg-yellow-100 text-yellow-800' }
@@ -55,11 +56,7 @@ const getStatusBadge = (event: Event) => {
         <div class="grid grid-cols-12 items-center px-4 py-4 hover:bg-gray-50">
           <!-- Event Info -->
           <div class="col-span-4 flex items-center space-x-3">
-            <img 
-              :src="`data:image/jpeg;base64,${event.cover}`" 
-              class="h-10 w-10 flex-shrink-0 rounded-full"
-              :alt="event.title"
-            >
+            <EventCover :event-id="event.id" :title="event.title" />
             <span class="text-sm font-medium text-gray-900">
               {{ event.title }}
             </span>
