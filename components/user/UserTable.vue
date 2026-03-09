@@ -9,6 +9,7 @@ import { UserCircleIcon as OutlineUserCircleIcon } from "@heroicons/vue/24/outli
 import type { UserListItem } from "~/types";
 import { useUsersStore } from "~/store/users";
 import { reactive } from "vue";
+import UserAvatar from "~/components/user/UserAvatar.vue";
 
 interface Props {
     users: UserListItem[];
@@ -156,16 +157,7 @@ const handleFilterChange = (
         <!-- Mobile Card -->
         <div class="md:hidden border-t p-4 hover:bg-gray-50">
           <div class="flex items-start gap-3">
-            <img
-              v-if="user.avatar"
-              :src="`data:image/jpeg;base64,${user.avatar}`"
-              class="w-10 h-10 rounded-full object-cover"
-              alt="User avatar"
-            >
-            <UserCircleIcon
-              v-else
-              class="w-10 h-10 text-gray-400"
-            />
+            <UserAvatar :user-id="user.id" />
             <div class="flex-1 min-w-0">
               <div class="flex justify-between items-start">
                 <h4 class="font-medium text-gray-900 truncate">
@@ -250,16 +242,7 @@ const handleFilterChange = (
           class="hidden md:grid grid-cols-12 items-center p-4 hover:bg-gray-50 border-t"
         >
           <div class="col-span-4 flex items-center gap-3">
-            <img
-              v-if="user.avatar"
-              :src="`data:image/jpeg;base64,${user.avatar}`"
-              class="w-10 h-10 rounded-full object-cover"
-              alt="User avatar"
-            >
-            <UserCircleIcon
-              v-else
-              class="w-10 h-10 text-gray-400"
-            />
+            <UserAvatar :user-id="user.id" />
             <span class="font-medium truncate">{{
               user.name
             }}</span>
