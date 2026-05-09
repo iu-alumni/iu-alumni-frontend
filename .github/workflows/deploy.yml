@@ -18,7 +18,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  test-and-build:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
         run: pnpm run build
 
   build-image:
-    needs: test-and-build
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: read
