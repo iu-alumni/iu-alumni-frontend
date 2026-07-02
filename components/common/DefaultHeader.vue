@@ -1,25 +1,29 @@
 <script setup lang="ts">
-import LogoSmall from '@/assets/icons/logo__small.svg'
-import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/solid'
+import LogoSmall from "@/assets/icons/logo__small.svg";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/vue/24/solid";
 
 const { $auth } = useNuxtApp();
-const route = useRoute()
+const route = useRoute();
 
 const links = [
-  {
-    label: 'Users',
-    link: '/users',
-  },
-  {
-    label: 'Events',
-    link: '/events',
-  },
-]
+    {
+        label: "Dashboard",
+        link: "/dashboard",
+    },
+    {
+        label: "Users",
+        link: "/users",
+    },
+    {
+        label: "Events",
+        link: "/events",
+    },
+];
 
 const logout = () => {
-  $auth.logout()
-  navigateTo('/')
-}
+    $auth.logout();
+    navigateTo("/");
+};
 </script>
 
 <template>
@@ -32,11 +36,14 @@ const logout = () => {
       >
       <ul class="flex flex-row items-center gap-[24px] -mr-[12px]">
         <NuxtLink
-          v-for="link in links" 
-          :key="link.link" 
-          :to="link.link" 
-          class="py-[6px] px-[12px] cursor-pointer bg-opacity-20 hover:text-brandgreen rounded-[4px] duration-100 transition-all" 
-          :class="{'bg-brandgreen text-brandgreen': route.fullPath.includes(link.link)}"
+          v-for="link in links"
+          :key="link.link"
+          :to="link.link"
+          class="py-[6px] px-[12px] cursor-pointer bg-opacity-20 hover:text-brandgreen rounded-[4px] duration-100 transition-all"
+          :class="{
+            'bg-brandgreen text-brandgreen':
+              route.fullPath.includes(link.link),
+          }"
         >
           <h5>
             {{ link.label }}

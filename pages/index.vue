@@ -15,7 +15,7 @@ const signIn = (event: Event) => {
     serverLogin(credentials.value.email, credentials.value.password)
         .then((res) => $auth.login(res.data.access_token))
         .then(() => {
-            navigateTo("/users");
+            navigateTo("/dashboard");
         })
         .catch((e) => {
             console.error(e);
