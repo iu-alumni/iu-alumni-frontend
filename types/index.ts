@@ -15,10 +15,10 @@ export type Event = {
     cost: number;
     is_online: boolean;
     cover: string | null;
-    approved: boolean;
+    approved: boolean | null;
 };
 
-/** Slim event type returned by list endpoints — no cover image. */
+/** Event type returned by the admin list endpoint — includes cover for thumbnails. */
 export type EventListItem = {
     id: string;
     owner_id: string;
@@ -29,7 +29,8 @@ export type EventListItem = {
     datetime: Date | string;
     cost: number;
     is_online: boolean;
-    approved: boolean;
+    cover: string | null;
+    approved: boolean | null;
 };
 
 export type EventParticipant = {

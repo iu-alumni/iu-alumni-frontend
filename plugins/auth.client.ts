@@ -19,7 +19,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     console.debug("[auth.ts] Initial loggedIn state:", loggedIn.value);
 
     // Create a ref to know where to redirect the user when logged in
-    const redirectTo = useState("authRedirect", () => "/users");
+    const redirectTo = useState("authRedirect", () => "/dashboard");
     console.debug("[auth.ts] Initial redirectTo:", redirectTo.value);
 
     /**
@@ -49,7 +49,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
                 console.debug(
                     "[auth.ts] User logged in on login page, redirecting to home",
                 );
-                return redirectTo.value || "/users";
+                return redirectTo.value || "/dashboard";
             }
         },
         { global: true },
@@ -86,9 +86,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     if (loggedIn.value && currentRoute.path === "/") {
         console.debug(
             "[auth.ts] User logged in, redirecting to:",
-            redirectTo.value || "/users",
+            redirectTo.value || "/dashboard",
         );
-        await navigateTo(redirectTo.value || "/users");
+        await navigateTo(redirectTo.value || "/dashboard");
     }
 
     // Provide auth utilities to components

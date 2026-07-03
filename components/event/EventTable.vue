@@ -6,7 +6,6 @@ import type { EventListItem } from '~/types';
 import SmallIcon from '../common/SmallIcon.vue';
 import DefaultIcon from '../common/DefaultIcon.vue';
 import DefaultSeparator from '../common/DefaultSeparator.vue';
-import EventCover from '../event/EventCover.vue';
 
 defineProps<{
   events: EventListItem[]
@@ -56,7 +55,16 @@ const getStatusBadge = (event: EventListItem) => {
         <div class="grid grid-cols-12 items-center px-4 py-4 hover:bg-gray-50">
           <!-- Event Info -->
           <div class="col-span-4 flex items-center space-x-3">
-            <EventCover :event-id="event.id" :title="event.title" />
+            <img
+              v-if="event.cover"
+              :src="`data:image/jpeg;base64,${event.cover}`"
+              class="h-10 w-10 flex-shrink-0 rounded-full object-cover"
+              :alt="event.title"
+            >
+            <div
+              v-else
+              class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200"
+            />
             <span class="text-sm font-medium text-gray-900">
               {{ event.title }}
             </span>
