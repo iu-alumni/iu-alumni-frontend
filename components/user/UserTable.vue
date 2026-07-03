@@ -8,7 +8,7 @@ import {
 import { UserCircleIcon as OutlineUserCircleIcon } from "@heroicons/vue/24/outline";
 import type { UserListItem } from "~/types";
 import { useUsersStore } from "~/store/users";
-import { reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import UserAvatar from "~/components/user/UserAvatar.vue";
 
 interface Props {
@@ -27,6 +27,33 @@ const emit = defineEmits(["ban", "verify", "filter-change"]);
 const filters = reactive({
     banned: null as boolean | null,
     verified: null as boolean | null,
+});
+
+const statusSort = ref<"unverified-first" | "verified-first" | "default">(
+    "unverified-first",
+);
+
+const sortedUsers = computed(() => {
+    const users = [...props.users];
+
+    if (statusSort.value === "default") return users;
+
+    return users.sort((a, b) => {
+        const statusRank = (user: UserListItem) => {
+            if (statusSort.value === "unverified-first") {
+                return user.is_verified ? 1 : 0;
+            }
+            return user.is_verified ? 0 : 1;
+        };
+
+        const rankDiff = statusRank(a) - statusRank(b);
+        if (rankDiff !== 0) return rankDiff;
+
+        const nameDiff = (a.name ?? "").localeCompare(b.name ?? "");
+        if (nameDiff !== 0) return nameDiff;
+
+        return a.email.localeCompare(b.email);
+    });
 });
 
 const edit = (id: string) => {
@@ -127,6 +154,23 @@ const handleFilterChange = (
           </option>
         </select>
       </div>
+      <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <label class="text-sm font-medium text-gray-700 self-center">Sort:</label>
+        <select
+          v-model="statusSort"
+          class="rounded-md border-gray-300 shadow-sm w-full sm:w-44"
+        >
+          <option value="unverified-first">
+            Unverified first
+          </option>
+          <option value="verified-first">
+            Verified first
+          </option>
+          <option value="default">
+            Default
+          </option>
+        </select>
+      </div>
     </div>
 
     <!-- Table -->
@@ -151,7 +195,7 @@ const handleFilterChange = (
 
       <!-- Rows -->
       <template
-        v-for="user in props.users"
+        v-for="user in sortedUsers"
         :key="user.id"
       >
         <!-- Mobile Card -->
@@ -304,7 +348,7 @@ const handleFilterChange = (
 
       <!-- Empty State -->
       <div
-        v-if="props.users.length === 0"
+        v-if="sortedUsers.length === 0"
         class="p-8 text-center text-gray-500"
       >
         No users found matching the current filters.
