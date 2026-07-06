@@ -114,3 +114,32 @@ export type Paginated<T> = {
     items: T[];
     next_cursor: string | null;
 };
+
+// ─── Badges ────────────────────────────────────────────────────────────────
+
+export type BadgeCatalogItem = {
+    code: string;
+    name: string;
+    description: string;
+    tier: 'gold' | 'silver' | 'bronze' | 'special';
+    icon_key: string;
+    strategy: string;
+    criteria_summary: string;
+    earned_by_count: number;
+};
+
+export type BadgeAward = {
+    alumni_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    awarded_at: string | null;
+    awarded_by: string | null;
+    extra: Record<string, unknown>;
+};
+
+export type BadgeAwardsResponse = {
+    code: string;
+    name: string;
+    awards: BadgeAward[];
+};
