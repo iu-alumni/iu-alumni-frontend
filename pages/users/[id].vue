@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ArrowTopRightOnSquareIcon } from "@heroicons/vue/24/solid";
+import AwardBadgeButton from "~/components/badge/AwardBadgeButton.vue";
 import DefaultButton from "~/components/common/DefaultButton.vue";
 import EntityHeader from "~/components/common/EntityHeader.vue";
 import EntityParagraph from "~/components/common/EntityParagraph.vue";
@@ -99,6 +100,10 @@ const openTelegram = (username: string) => {
               >
                 Unban User
               </DefaultButton>
+              <AwardBadgeButton
+                :alumni-id="user.id"
+                :user-label="`${user.first_name} ${user.last_name}`"
+              />
             </div>
           </template>
         </EntityHeader>
