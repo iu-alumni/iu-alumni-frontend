@@ -18,6 +18,10 @@ const links = [
         label: "Events",
         link: "/events",
     },
+    {
+        label: "Projects",
+        link: "/projects",
+    },
 ];
 
 const logout = () => {

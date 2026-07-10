@@ -114,3 +114,22 @@ export type Paginated<T> = {
     items: T[];
     next_cursor: string | null;
 };
+
+/**
+ * Project — an alumnus-proposed cause / campaign that other alumni
+ * "contribute" to (v1 is a click, no money — see FR24 in docs).
+ */
+export type Project = {
+    id: string;
+    owner_id: string;
+    contributors_ids: string[];
+    title: string;
+    description: string;
+    cover: string | null;
+    approved: boolean | null;
+    created_at: string;
+};
+
+export type ProjectListItem = Project;
+
+export type ProjectStatusFilter = "pending" | "approved" | "declined" | "all";
