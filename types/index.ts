@@ -126,6 +126,7 @@ export type Project = {
     title: string;
     description: string;
     cover: string | null;
+    donation_link: string | null;
     approved: boolean | null;
     created_at: string;
 };

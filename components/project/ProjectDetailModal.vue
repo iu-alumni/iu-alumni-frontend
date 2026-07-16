@@ -91,6 +91,20 @@ const statusLabel = (approved: boolean | null) => {
             </div>
           </div>
 
+          <div v-if="project.donation_link">
+            <p class="text-xs uppercase tracking-wider text-gray-400 mb-1">
+              Donation link
+            </p>
+            <a
+              :href="project.donation_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="break-all text-sm text-blue-600 hover:underline"
+            >
+              {{ project.donation_link }}
+            </a>
+          </div>
+
           <div>
             <p class="text-xs uppercase tracking-wider text-gray-400 mb-1">
               Owner ID
