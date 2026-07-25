@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import DefaultButton from "~/components/common/DefaultButton.vue";
 import type { ProjectListItem } from "~/types";
 
@@ -20,6 +21,25 @@ const statusLabel = (approved: boolean | null) => {
     if (approved === false) return "Declined";
     return "Pending review";
 };
+
+// Compact ruble format matching the mobile card: 720k / 1M / 1.2k / 500.
+const formatRubles = (amount: number) => {
+    if (amount >= 1_000_000) {
+        const m = amount / 1_000_000;
+        return m === Math.round(m) ? `${m}M` : `${m.toFixed(1)}M`;
+    }
+    if (amount >= 1_000) {
+        const k = amount / 1_000;
+        return k === Math.round(k) ? `${k}k` : `${k.toFixed(1)}k`;
+    }
+    return String(amount);
+};
+
+const progressPct = computed(() => {
+    const p = props.project;
+    if (!p || !p.goal_amount || p.goal_amount <= 0) return 0;
+    return Math.min(100, Math.round((p.raised_amount / p.goal_amount) * 100));
+});
 </script>
 
 <template>
@@ -88,6 +108,26 @@ const statusLabel = (approved: boolean | null) => {
               <p class="text-sm text-gray-900">
                 {{ formatDate(project.created_at) }}
               </p>
+            </div>
+          </div>
+
+          <div v-if="project.goal_amount">
+            <p class="text-xs uppercase tracking-wider text-gray-400 mb-1">
+              Fundraising
+            </p>
+            <div class="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-gray-100">
+              <div
+                class="h-full rounded-full bg-emerald-500"
+                :style="{ width: progressPct + '%' }"
+              />
+            </div>
+            <div class="mt-1.5 flex items-baseline justify-between text-sm">
+              <span class="font-bold text-emerald-700">
+                &#8381; {{ formatRubles(project.raised_amount) }} raised
+              </span>
+              <span class="text-gray-500">
+                of &#8381; {{ formatRubles(project.goal_amount) }} &middot; {{ progressPct }}%
+              </span>
             </div>
           </div>
 

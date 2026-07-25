@@ -22,6 +22,11 @@ const formatDate = (iso: string) =>
         month: "short",
         day: "2-digit",
     }).format(new Date(iso));
+
+const pctFor = (p: ProjectListItem) => {
+    if (!p.goal_amount || p.goal_amount <= 0) return 0;
+    return Math.min(100, Math.round((p.raised_amount / p.goal_amount) * 100));
+};
 </script>
 
 <template>
@@ -78,8 +83,8 @@ const formatDate = (iso: string) =>
             </div>
           </div>
 
-          <!-- Contributors -->
-          <div class="col-span-2 text-sm text-gray-500 flex items-center gap-2">
+          <!-- Contributors + fundraising signal -->
+          <div class="col-span-2 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
             <span>{{ project.contributors_ids.length }}</span>
             <span
               v-if="project.donation_link"
@@ -87,6 +92,13 @@ const formatDate = (iso: string) =>
               title="Has donation link"
             >
               💳 Link
+            </span>
+            <span
+              v-if="project.goal_amount"
+              class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700"
+              :title="`Raised ₽${project.raised_amount} of ₽${project.goal_amount}`"
+            >
+              {{ pctFor(project) }}%
             </span>
           </div>
 

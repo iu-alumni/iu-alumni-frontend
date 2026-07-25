@@ -156,6 +156,10 @@ export type Project = {
     description: string;
     cover: string | null;
     donation_link: string | null;
+    /** Whole-ruble fundraising target the owner set. Null = no target. */
+    goal_amount: number | null;
+    /** Whole rubles raised so far (self-reported by donors). */
+    raised_amount: number;
     approved: boolean | null;
     created_at: string;
 };
