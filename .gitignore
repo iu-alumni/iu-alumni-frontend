@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# graphify code-graph output (generated, not source)
+graphify-out/
