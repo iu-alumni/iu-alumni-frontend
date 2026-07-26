@@ -37,7 +37,9 @@ export const useEventsStore = defineStore('events', {
 
     deleteEvent(eventId: string) {
       const index = this.events.findIndex(event => event.id === eventId)
-      this.events.splice(index, 1)
+      // findIndex returns -1 when the id is not cached, and splice(-1, 1) would
+      // drop the LAST event instead — removing an unrelated event from the list.
+      if (index !== -1) this.events.splice(index, 1)
       return eventsInstance.deleteEvent(eventId)
     },
 
