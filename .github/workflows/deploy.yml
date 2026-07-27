@@ -132,6 +132,8 @@ jobs:
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       SERVER_USER: ${{ secrets.SERVER_USER }}
       SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      DOMAIN: ${{ secrets.DOMAIN }}
+      ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
 
   smoke-production:
     needs: deploy-production
@@ -142,3 +144,5 @@ jobs:
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       SERVER_USER: ${{ secrets.SERVER_USER }}
       SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      DOMAIN: ${{ secrets.DOMAIN }}
+      ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
