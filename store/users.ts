@@ -103,6 +103,31 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
+    /**
+     * Flip a user's role via the admin verify endpoint (which accepts
+     * an optional `role` override). Looks up the user's email from the
+     * cached list and re-fetches their profile after so the caller sees
+     * the cleared graduation_year when flipping to alumni_friend.
+     */
+    async setUserRole(userId: string, role: 'alumni' | 'alumni_friend') {
+      try {
+        const target = this.users.find(u => u.id === userId);
+        if (!target || !target.email) {
+          console.error('User not found or missing email');
+          return undefined;
+        }
+        await usersInstance.setUserRole(target.email, role);
+        target.role = role;
+        if (role === 'alumni_friend') {
+          target.graduation_year = null;
+        }
+        return usersInstance.getUserById(userId);
+      } catch (error) {
+        console.error('Failed to change user role:', error);
+        throw error;
+      }
+    },
+
     async changeUserVerificationStatus(userId: string) {
       try {
         const user = this.users.find(u => u.id === userId);

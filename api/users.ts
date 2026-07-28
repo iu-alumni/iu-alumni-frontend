@@ -1,4 +1,4 @@
-import type { User, UserListItem, UserProfile, Paginated } from "~/types";
+import type { AlumniRole, User, UserListItem, UserProfile, Paginated } from "~/types";
 import axiosInstance from ".";
 
 interface ListUsersParams {
@@ -41,6 +41,14 @@ function unverifyUser (email: string): Promise<User> {
   return axiosInstance.post('api/v1/admin/unverify', { email }).then(req => req.data)
 }
 
+// Admin verify endpoint accepts an optional `role` field; sending only
+// the role flips it without re-triggering side-effects on already-
+// verified users. Backend clears graduation_year server-side when the
+// role becomes 'alumni_friend'.
+function setUserRole (email: string, role: AlumniRole): Promise<{ email: string; role: AlumniRole }> {
+  return axiosInstance.post('api/v1/admin/verify', { email, role }).then(req => req.data)
+}
+
 function uploadAllowedEmailsXls (file: File): Promise<{success: true, message: string}> {
   const formData = new FormData();
   formData.append("file", file);
@@ -63,5 +71,6 @@ export default {
   unbanUser,
   verifyUser,
   unverifyUser,
+  setUserRole,
   uploadAllowedEmailsXls
 }

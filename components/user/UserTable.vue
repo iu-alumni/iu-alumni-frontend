@@ -204,9 +204,18 @@ const handleFilterChange = (
             <UserAvatar :user-id="user.id" />
             <div class="flex-1 min-w-0">
               <div class="flex justify-between items-start">
-                <h4 class="font-medium text-gray-900 truncate">
-                  {{ user.name }}
-                </h4>
+                <div class="flex items-center gap-2 min-w-0">
+                  <h4 class="font-medium text-gray-900 truncate">
+                    {{ user.name }}
+                  </h4>
+                  <span
+                    v-if="user.role === 'alumni_friend'"
+                    class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-800"
+                    title="Non-graduate community member"
+                  >
+                    Friend
+                  </span>
+                </div>
                 <div class="flex items-center gap-1">
                   <button
                     class="p-1 text-sm rounded-md"
@@ -285,11 +294,18 @@ const handleFilterChange = (
         <div
           class="hidden md:grid grid-cols-12 items-center p-4 hover:bg-gray-50 border-t"
         >
-          <div class="col-span-4 flex items-center gap-3">
+          <div class="col-span-4 flex items-center gap-3 min-w-0">
             <UserAvatar :user-id="user.id" />
             <span class="font-medium truncate">{{
               user.name
             }}</span>
+            <span
+              v-if="user.role === 'alumni_friend'"
+              class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-800 whitespace-nowrap"
+              title="Non-graduate community member"
+            >
+              Friend
+            </span>
           </div>
           <div class="col-span-3 text-gray-600 truncate">
             {{ user.email }}
