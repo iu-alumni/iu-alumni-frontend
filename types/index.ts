@@ -54,13 +54,19 @@ export type Activity = {
     name: string;
 };
 
+/** Wire values for the two supported alumni roles. */
+export type AlumniRole = "alumni" | "alumni_friend";
+
 export type User = {
     id: string;
     email: string;
     hashed_password: string;
     first_name: string;
     last_name: string;
-    graduation_year: string;
+    /** Null for Alumni Friends — the UI shows an "Alumni Friend" chip instead. */
+    graduation_year: string | null;
+    /** Defaults to "alumni" for pre-role rows. */
+    role: AlumniRole;
     location: string;
     biography: string;
     show_location: boolean;
@@ -81,7 +87,8 @@ export type UserListItem = {
     email: string;
     first_name: string;
     last_name: string;
-    graduation_year: string;
+    graduation_year: string | null;
+    role: AlumniRole;
     location: string | null;
     biography: string | null;
     show_location: boolean;
@@ -97,7 +104,8 @@ export type UserProfile = {
     id: string;
     first_name: string;
     last_name: string;
-    graduation_year: string;
+    graduation_year: string | null;
+    role: AlumniRole;
     location: string | null;
     biography: string | null;
     show_location: boolean;
