@@ -151,3 +151,27 @@ export type BadgeAwardsResponse = {
     name: string;
     awards: BadgeAward[];
 };
+
+/**
+ * Project — an alumnus-proposed cause / campaign that other alumni
+ * "contribute" to (v1 is a click, no money — see FR24 in docs).
+ */
+export type Project = {
+    id: string;
+    owner_id: string;
+    contributors_ids: string[];
+    title: string;
+    description: string;
+    cover: string | null;
+    donation_link: string | null;
+    /** Whole-ruble fundraising target the owner set. Null = no target. */
+    goal_amount: number | null;
+    /** Whole rubles raised so far (self-reported by donors). */
+    raised_amount: number;
+    approved: boolean | null;
+    created_at: string;
+};
+
+export type ProjectListItem = Project;
+
+export type ProjectStatusFilter = "pending" | "approved" | "declined" | "all";

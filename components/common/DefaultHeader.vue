@@ -22,6 +22,10 @@ const links = [
         label: "Badges",
         link: "/badges",
     },
+    {
+        label: "Projects",
+        link: "/projects",
+    },
 ];
 
 const logout = () => {
