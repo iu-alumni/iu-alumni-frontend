@@ -18,7 +18,7 @@ export type Event = {
     approved: boolean | null;
 };
 
-/** Event type returned by the admin list endpoint — includes cover for thumbnails. */
+/** Lightweight event returned by the admin list endpoint. */
 export type EventListItem = {
     id: string;
     owner_id: string;
@@ -29,7 +29,6 @@ export type EventListItem = {
     datetime: Date | string;
     cost: number;
     is_online: boolean;
-    cover: string | null;
     approved: boolean | null;
 };
 
