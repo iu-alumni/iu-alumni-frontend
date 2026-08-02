@@ -8,6 +8,7 @@ import EventParticipants from '~/components/event/EventParticipants.vue';
 import { useEventsStore } from '~/store/events';
 import { useUsersStore } from '~/store/users';
 import type { EventParticipant } from '~/types';
+import eventsApi from '~/api/events';
 
 const route = useRoute()
 const eventsStore = useEventsStore()
@@ -32,12 +33,14 @@ onMounted(async () => {
   const eventId = route.params.id as string
   event.value = await eventsStore.getEventById(eventId)
   if (event.value) {
-    const [participantsData, ownerData] = await Promise.all([
+    const [participantsData, ownerData, coverData] = await Promise.all([
       eventsStore.listParticipants(eventId),
-      usersStore.getUserById(event.value.owner_id)
+      usersStore.getUserById(event.value.owner_id),
+      eventsApi.getEventCover(eventId).catch(() => ({ cover: null })),
     ])
     participants.value = participantsData
     owner.value = ownerData
+    event.value = { ...event.value, cover: coverData.cover }
   }
   isLoading.value = false
 })
